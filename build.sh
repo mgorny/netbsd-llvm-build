@@ -1,11 +1,23 @@
 #!/bin/bash -ex
-ROOT=$(pwd)
-ln -s ../../clang external/llvm/tools/clang || true
-ln -s ../../lldb external/llvm/tools/lldb || true
+
+# $0 == external/lldb-utils/build-darwin.sh
+ROOT=$(dirname $(dirname $(dirname $(realpath "$0"))))
+cd "$ROOT"
+
+if [ -h external/llvm/tools/clang ]; then
+    rm external/llvm/tools/clang
+fi
+if [ -h external/llvm/tools/lldb ]; then
+    rm external/llvm/tools/lldb
+fi
+
+ln -s ../../clang external/llvm/tools/clang
+ln -s ../../lldb external/llvm/tools/lldb
 
 CONFIG=Release
 PRE=$ROOT/prebuilts
 export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+export PATH="$PRE/ninja/linux-x86:$PATH"
 BUILD=$ROOT/out/lldb/host
 rm -rf $BUILD
 mkdir -p $BUILD
