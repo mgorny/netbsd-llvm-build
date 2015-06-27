@@ -72,4 +72,5 @@ cd $ROOT_DIR/external/lldb/test
 ./dosep.py -o "-m --executable $BUILD/$CONFIG/lldb -s $BUILD/traces"
 
 mkdir -p "$ROOT_DIR/$DIST/"
-(cd $BUILD/$CONFIG/ && zip -r - lldb LLDB.framework) > "$ROOT_DIR/$DIST/lldb-mac-$BNUM.zip"
+# zip file is 5.5GB, need to prune
+#(cd $BUILD/$CONFIG/ && zip -r - lldb LLDB.framework) > "$ROOT_DIR/$DIST/lldb-mac-$BNUM.zip"

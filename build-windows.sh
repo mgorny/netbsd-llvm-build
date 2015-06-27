@@ -90,4 +90,5 @@ $PRE/ninja/windows-x86/ninja install
 #./dosep.py -o "-m --executable $BUILD/bin/lldb -s $BUILD/traces"
 
 mkdir -p "$ROOT_DIR/$DIST"
-(cd $INSTALL && zip -r - ".") > "$ROOT_DIR/$DIST/lldb-windows-$BNUM.zip"
+# zip file is 5.5GB, need to prune
+#(cd $INSTALL && zip -r - ".") > "$ROOT_DIR/$DIST/lldb-windows-$BNUM.zip"
