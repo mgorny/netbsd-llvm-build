@@ -47,7 +47,7 @@ mkdir -p "$OUT"
 echo "## Building android-studio ##"
 echo "## Dest dir : $DIST"
 echo "## Qualifier: $QUAL"
-echo "## Build Num: $BNUßM"
+echo "## Build Num: $BNUM"
 echo
 
 ln -s ../../clang external/llvm/tools || true
@@ -59,7 +59,6 @@ rm -rf "$DIST"
 mkdir -p "$BUILD"
 
 export SWIG_LIB=$PRE/swig/darwin-x86/share/swig/2.0.11/
-INSTALL=$ROOT_DIR/$OUT/lldb/install
 
 CONFIG=Release
 PRE="$ROOT_DIR/prebuilts"
@@ -72,5 +71,9 @@ cd $ROOT_DIR/external/lldb/test
 ./dosep.py -o "-m --executable $BUILD/$CONFIG/lldb -s $BUILD/traces"
 
 mkdir -p "$ROOT_DIR/$DIST/"
-# zip file is 5.5GB, need to prune
-#(cd $BUILD/$CONFIG/ && zip -r - lldb LLDB.framework) > "$ROOT_DIR/$DIST/lldb-mac-$BNUM.zip"
+# zip file is huge, need to prune
+find $BUILD/$CONFIG/LLDB.framework/ -name Clang -type d | xargs rm -rf
+find $BUILD/$CONFIG/LLDB.framework/ -name debugserver | xargs rm
+find $BUILD/$CONFIG/LLDB.framework/ -name lldb-server | xargs rm
+
+(cd $BUILD/$CONFIG/ && zip -r --symlinks - lldb LLDB.framework) > "$ROOT_DIR/$DIST/lldb-mac-$BNUM.zip"
