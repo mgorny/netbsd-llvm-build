@@ -74,6 +74,7 @@ LLDB_FLAGS="-fuse-ld=gold -target x86_64-unknown-linux"
 CLANG=$PRE/clang/linux-x86/host/3.6/bin/clang
 export SWIG_LIB=$PRE/swig/linux-x86/share/swig/2.0.11/
 INSTALL=$ROOT_DIR/$OUT/lldb/install
+rm -rf $INSTALL || true
 
 $PRE/cmake/linux-x86/bin/cmake -G Ninja \
 -DCMAKE_BUILD_TYPE=$CONFIG \
@@ -86,14 +87,25 @@ $PRE/cmake/linux-x86/bin/cmake -G Ninja \
 -DCMAKE_INSTALL_PREFIX=$INSTALL \
 $ROOT_DIR/external/llvm
 
-$PRE/ninja/linux-x86/ninja lldb lldb-server finish_swig
+$PRE/ninja/linux-x86/ninja lldb lldb-server finish_swig lib/readline.so
 
-$PRE/ninja/linux-x86/ninja install
+# install target builds/installs 5G of stuff we don't need
+#$PRE/ninja/linux-x86/ninja install
+
+mkdir -p $INSTALL/bin
+mkdir -p $INSTALL/lib
+mkdir -p $INSTALL/include
+cp -r lib/python2.7/ $INSTALL/lib/python2.7/
+cp -a lib/liblldb.so* $INSTALL/lib/
+cp lib/readline.so $INSTALL/lib/
+cp bin/lldb $INSTALL/bin/
+cp bin/lldb-server $INSTALL/bin/
+cp -r ../../../external/lldb/include/lldb/API/ $INSTALL/include/LLDB
 
 cd $ROOT_DIR/external/lldb/test
-./dosep.py -o "-m --executable $BUILD/bin/lldb -s $BUILD/traces"
+./dosep.py -o "-m --executable $INSTALL/bin/lldb -s $BUILD/traces"
 
 mkdir -p "$ROOT_DIR/$DIST"
 # zip file is 5.5GB, need to prune
-#(cd $INSTALL && zip -r - ".") > "$ROOT_DIR/$DIST/lldb-linux-$BNUM.zip"
+(cd $INSTALL && zip --symlinks -r - ".") > "$ROOT_DIR/$DIST/lldb-linux-$BNUM.zip"
 
