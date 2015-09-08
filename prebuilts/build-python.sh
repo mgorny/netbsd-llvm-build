@@ -20,18 +20,18 @@ cd $BASE
 
 case "$OS" in
 windows)
-	cp PC/pyconfig.h Include
+	cp PC/pyconfig.h Include/
 	devenv PCbuild/pcbuild.sln /Upgrade
 	# some projects will fail and that's okay
-	devenv PCbuild/pcbuild.sln /Build Debug /Out log.txt || egrep -c "========== Build: 18 succeeded, 7 failed, 0 up-to-date, 1 skipped ==========" log.txt
-	devenv PCbuild/pcbuild.sln /Build Release /Out log.txt || egrep -c "========== Build: 17 succeeded, 7 failed, 1 up-to-date, 1 skipped ==========" log.txt
-	devenv PCbuild/pcbuild.sln /Build "Release|x64" /Out log.txt || egrep -c "========== Build: 16 succeeded, 7 failed, 2 up-to-date, 1 skipped ==========" log.txt
-	devenv PCbuild/pcbuild.sln /Build "Debug|x64" /Out log.txt || egrep -c "========== Build: 16 succeeded, 7 failed, 2 up-to-date, 1 skipped ==========" log.txt
+	devenv PCbuild/pcbuild.sln /Build Debug || true
+	devenv PCbuild/pcbuild.sln /Build Release || true
+	devenv PCbuild/pcbuild.sln /Build "Debug^|x64" || true
+	devenv PCbuild/pcbuild.sln /Build "Release^|x64" || true
 	curl -L http://llvm.org/svn/llvm-project/lldb/trunk/scripts/install_custom_python.py -o install_custom_python.py
-	python install_custom_python.py --source "$(cygpath -w $RD/Python-$VER)" --dest "$(cygpath -w $INSTALL)" --overwrite --silent
+	python install_custom_python.py --source "$(cygpath -w "$RD/$BASE")" --dest "$(cygpath -w "$INSTALL")" --overwrite --silent
 	;;
 linux|darwin)
-    # can't get prebuilt clang working https://b/22748915
+	unset CFLAGS CXXFLAGS
 	mkdir $RD/build
 	cd $RD/build
 	$RD/$BASE/configure --prefix=$INSTALL --enable-unicode=ucs4 --enable-shared
@@ -40,7 +40,6 @@ linux|darwin)
 	;;
 esac
 
-find $INSTALL '(' -name '*.pyc' -or -name '*.pyo' ')' -exec rm {} +
+find $INSTALL '(' -name '*.pyc' -or -name '*.pyo' ')' -delete
 
 commit_and_push
-

@@ -87,8 +87,7 @@ cp -a "$LLDB/include/lldb/"{API,Utility,lldb-*.h}    "$INSTALL/host/include/lldb
 find "$INSTALL/host/include/lldb" -name 'lldb-private*.h' -delete
 
 unset PRUNE
-PRUNE+=(-name 'hashlib.py')
-PRUNE+=(-or -name '*.pyc')
+PRUNE+=(-name '*.pyc')
 PRUNE+=(-or -name '*.pyo')
 PRUNE+=(-or -name 'plat-*')
 PRUNE+=(-or -name 'config')
