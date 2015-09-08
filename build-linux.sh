@@ -95,7 +95,6 @@ PRUNE+=(-or -name 'distutils')
 PRUNE+=(-or -name 'idlelib')
 PRUNE+=(-or -name 'lib2to3')
 PRUNE+=(-or -name 'test')
-PRUNE+=(-or -name 'unittest')
 find "$INSTALL/host/lib/python2.7" '(' "${PRUNE[@]}" ')' -prune -exec rm -r {} +
 
 (cd "$INSTALL/host" && zip --symlinks -r "$DEST/lldb-linux-${BNUM}.zip" .)
