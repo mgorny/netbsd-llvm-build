@@ -64,11 +64,12 @@ CMD+=('&&' "$(cygpath -w "${NINJA}.exe")" lldb finish_swig)
 
 PATH="$(cygpath -u 'C:\Windows\System32')" "${CMD[@]}"
 
-mkdir -p "$INSTALL/host/bin" "$INSTALL/host/lib" "$INSTALL/host/include/lldb"
+mkdir -p "$INSTALL/host/"{bin,lib,include/lldb,dlls}
 cp -a "$BUILD/bin/"{lldb.exe,liblldb.dll}         "$INSTALL/host/bin/"
 cp -a "$PYTHON_DIR/x86/python27.dll"              "$INSTALL/host/bin/"
 cp -a "$BUILD/lib/"{liblldb.lib,site-packages}    "$INSTALL/host/lib/"
 cp -a "$PYTHON_DIR/x86/Lib/"*                     "$INSTALL/host/lib/"
+cp -a "$PYTHON_DIR/x86/DLLs/"*.pyd                "$INSTALL/host/dlls/"
 cp -a "$LLDB/include/lldb/"{API,Utility,lldb-*.h} "$INSTALL/host/include/lldb/"
 
 find "$INSTALL/host/include/lldb" -name 'lldb-private*.h' -delete

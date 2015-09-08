@@ -75,7 +75,7 @@ CMAKE_OPTIONS+=(-DLLVM_EXTERNAL_CLANG_SOURCE_DIR="$CLANG")
 # install target builds/installs 5G of stuff we don't need
 #"$NINJA" -C "$BUILD" install
 
-mkdir -p "$INSTALL/host/bin" "$INSTALL/host/lib" "$INSTALL/host/include/lldb"
+mkdir -p "$INSTALL/host/"{bin,lib,include/lldb}
 cp -a "$BUILD/bin/"lldb*                             "$INSTALL/host/bin/"
 cp -a "$BUILD/lib/"{liblldb.so*,readline.so}         "$INSTALL/host/lib/"
 cp -a "$PREBUILTS/libedit/linux-x86/lib/"libedit.so* "$INSTALL/host/lib/"
