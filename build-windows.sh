@@ -77,7 +77,6 @@ find "$INSTALL/host/include/lldb" -name 'lldb-private*.h' -delete
 unset PRUNE
 PRUNE+=(-name '*.pyc')
 PRUNE+=(-or -name 'plat-*')
-PRUNE+=(-or -name 'distutils')
 PRUNE+=(-or -name 'idlelib')
 PRUNE+=(-or -name 'lib2to3')
 PRUNE+=(-or -name 'test')
