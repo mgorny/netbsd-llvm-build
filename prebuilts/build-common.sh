@@ -69,9 +69,9 @@ esac
 RD=$SCRATCH/$PROJ-$USER
 INSTALL="$RD/install"
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
-SCRIPT_FILE="$SCRIPT_DIR/$(basename "${BASH_SOURCE[0]}")"
-COMMON_FILE="$SCRIPT_DIR/$(basename "${BASH_SOURCE[1]}")"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[1]}")" && pwd -P)"
+SCRIPT_FILE="$SCRIPT_DIR/$(basename "${BASH_SOURCE[1]}")"
+COMMON_FILE="$SCRIPT_DIR/$(basename "${BASH_SOURCE[0]}")"
 
 cd /tmp # windows can't delete if you're in the dir
 rm -rf $RD
