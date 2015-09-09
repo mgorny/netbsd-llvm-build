@@ -20,21 +20,6 @@ if [ ! "${BASH_SOURCE[1]}" ]; then
 	esac
 fi
 
-# path too long
-TMP="$(mktemp -d)"
-mv "$LLVM" "$LLDB" "$CLANG" "$TMP/"
-LLVM="$TMP/llvm"
-LLDB="$TMP/lldb"
-CLANG="$TMP/clang"
-
-function finish() {
-	# move these back
-	mv "$LLVM" "$LLDB" "$CLANG" "$ROOT_DIR/external/"
-	rmdir "$TMP"
-}
-
-trap finish EXIT
-
 export SWIG_LIB="$(cygpath -w "$SWIG_LIB")"
 
 CONFIG=Release
