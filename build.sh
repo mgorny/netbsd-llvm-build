@@ -10,7 +10,7 @@ set -e
 # calculate the root directory from the script path
 # this script lives two directories down from the root
 # external/lldb-utils/build.sh
-ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd -P)"
 cd "$ROOT_DIR"
 
 function die() {
@@ -30,8 +30,8 @@ BNUM="$3"
 [ ! "$BNUM" ] && die "## Error: Missing build number"
 
 mkdir -p "$OUT" "$DEST"
-OUT="$(cd "$OUT" && pwd)"
-DEST="$(cd "$DEST" && pwd)"
+OUT="$(cd "$OUT" && pwd -P)"
+DEST="$(cd "$DEST" && pwd -P)"
 
 cat <<END_INFO
 ## Building android-studio ##

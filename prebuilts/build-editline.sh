@@ -10,7 +10,7 @@
 PROJ=libedit
 VER=20150325-3.1
 
-source $(dirname "$0")/build-common.sh build-common.sh
+source "$(dirname "${BASH_SOURCE[0]}")/build-common.sh"
 
 BASE=$PROJ-$VER
 TGZ=$BASE.tar.gz

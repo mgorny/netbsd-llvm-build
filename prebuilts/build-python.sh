@@ -10,7 +10,7 @@ PROJ=python
 VER=2.7.10
 MSVS=2013
 
-source $(dirname "$0")/build-common.sh build-common.sh
+source "$(dirname "${BASH_SOURCE[0]}")/build-common.sh"
 
 BASE=Python-$VER
 TGZ=$BASE.tgz

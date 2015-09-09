@@ -69,14 +69,9 @@ esac
 RD=$SCRATCH/$PROJ-$USER
 INSTALL="$RD/install"
 
-# OSX lacks a "realpath" bash command
-realpath() {
-    [[ "$1" == /* ]] && echo "$1" || echo "$PWD/${1#./}"
-}
-
-SCRIPT_FILE=$(realpath "$0")
-SCRIPT_DIR="$(dirname "$SCRIPT_FILE")"
-COMMON_FILE="$SCRIPT_DIR/$1"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
+SCRIPT_FILE="$SCRIPT_DIR/$(basename "${BASH_SOURCE[0]}")"
+COMMON_FILE="$SCRIPT_DIR/$(basename "${BASH_SOURCE[1]}")"
 
 cd /tmp # windows can't delete if you're in the dir
 rm -rf $RD

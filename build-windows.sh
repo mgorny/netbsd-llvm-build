@@ -10,7 +10,7 @@ set -e
 if [ ! "${BASH_SOURCE[1]}" ]; then
 	case "$(uname -s)" in
 		*_NT-*)
-			ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+			ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd -P)"
 			source "$ROOT_DIR/external/lldb-utils/build.sh" "$@"
 			exit 0
 			;;
