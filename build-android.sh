@@ -39,34 +39,37 @@ ABI=$ARCH
 TRIPLE_ARCH=$ARCH
 SYSROOT_ARCH=$ARCH
 STL_ARCH=$ARCH
+RELEASE_ARCH=$ARCH
 
 case $ARCH in
-    x86)
-        TOOLCHAIN="$PREBUILTS/gcc/linux-x86/x86/x86_64-linux-android-4.9"
-        LLVM_ARCH=X86 TRIPLE_ARCH=i386 ABI=x86_64
-        LLDB_FLAGS+=(-m32)
-        ;;
-    x86_64)
-        TOOLCHAIN="$PREBUILTS/gcc/linux-x86/x86/x86_64-linux-android-4.9"
-        LLVM_ARCH=X86
-        ;;
-    arm)
-        TOOLCHAIN="$PREBUILTS/gcc/linux-x86/arm/arm-linux-androideabi-4.9"
-        LLVM_ARCH=ARM STL_ARCH=armeabi-v7a ABI=armeabi
-        ;;
-    aarch64)
-        TOOLCHAIN="$PREBUILTS/gcc/linux-x86/aarch64/aarch64-linux-android-4.9"
-        LLVM_ARCH=AArch64 SYSROOT_ARCH=arm64 STL_ARCH=arm64-v8a
-        ;;
-    mips)
-        TOOLCHAIN="$PREBUILTS/gcc/linux-x86/mips/mips64el-linux-android-4.9"
-        LLVM_ARCH=Mips ABI=mips64
-        LLDB_FLAGS+=(-mips32)
-        ;;
-    mips64)
-        TOOLCHAIN="$PREBUILTS/gcc/linux-x86/mips/mips64el-linux-android-4.9"
-        LLVM_ARCH=Mips
-        ;;
+	x86)
+		TOOLCHAIN="$PREBUILTS/gcc/linux-x86/x86/x86_64-linux-android-4.9"
+		LLVM_ARCH=X86 TRIPLE_ARCH=i386 ABI=x86_64
+		LLDB_FLAGS+=(-m32)
+		;;
+	x86_64)
+		TOOLCHAIN="$PREBUILTS/gcc/linux-x86/x86/x86_64-linux-android-4.9"
+		LLVM_ARCH=X86
+		;;
+	arm)
+		TOOLCHAIN="$PREBUILTS/gcc/linux-x86/arm/arm-linux-androideabi-4.9"
+		LLVM_ARCH=ARM STL_ARCH=armeabi-v7a ABI=armeabi
+		RELEASE_ARCH=$ABI
+		;;
+	aarch64)
+		TOOLCHAIN="$PREBUILTS/gcc/linux-x86/aarch64/aarch64-linux-android-4.9"
+		LLVM_ARCH=AArch64 SYSROOT_ARCH=arm64 STL_ARCH=arm64-v8a
+		RELEASE_ARCH=$STL_ARCH
+		;;
+	mips)
+		TOOLCHAIN="$PREBUILTS/gcc/linux-x86/mips/mips64el-linux-android-4.9"
+		LLVM_ARCH=Mips ABI=mips64
+		LLDB_FLAGS+=(-mips32)
+		;;
+	mips64)
+		TOOLCHAIN="$PREBUILTS/gcc/linux-x86/mips/mips64el-linux-android-4.9"
+		LLVM_ARCH=Mips
+		;;
 esac
 
 SYSROOT="$PREBUILTS/ndk/current/platforms/android-21/arch-$SYSROOT_ARCH"
@@ -117,8 +120,8 @@ CMAKE_OPTIONS+=(-DLLVM_EXTERNAL_CLANG_SOURCE_DIR="$CLANG")
 (cd "$BUILD" && "$CMAKE" "${CMAKE_OPTIONS[@]}")
 "$NINJA" -C "$BUILD" lldb-server
 
-mkdir -p "$INSTALL/android/$TRIPLE_ARCH"
-cp -aL "$BUILD/bin/lldb-server" "$INSTALL/android/$TRIPLE_ARCH/"
+mkdir -p "$INSTALL/android/$RELEASE_ARCH"
+cp -aL "$BUILD/bin/lldb-server" "$INSTALL/android/$RELEASE_ARCH/"
 
 done # for ARCH
 
