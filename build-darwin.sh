@@ -20,8 +20,8 @@ if [ ! "${BASH_SOURCE[1]}" ]; then
 	esac
 fi
 
-ln -fns ../llvm "$LLDB/llvm"
-ln -fns ../../clang "$LLVM/tools/clang"
+ln -fns "$LLVM" "$LLDB/"
+ln -fns "$CLANG" "$LLVM/tools/"
 
 export PATH="$SWIG_DIR/bin:/usr/sbin:/usr/bin:/bin"
 
