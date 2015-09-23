@@ -1,5 +1,6 @@
 @echo off
 
+SET testexitcode=0
 FOR /F "tokens=1,2,3 delims=," %%A IN ("%*") DO (
     SET deviceId=%%A
     SET compiler=%%B
@@ -10,6 +11,9 @@ SET LLDB_TEST_THREADS=8
 
 call taskkill /f /im "adb.exe"
 call adb -s %deviceId% shell getprop ro.build.fingerprint
+call adb -s %deviceID% shell ps | grep lldb-server | awk "{print $2}" | xargs adb -s %deviceID% shell kill
+call adb -s %deviceID% shell rm -rf %remoteDir%
+call adb -s %deviceID% shell mkdir %remoteDir%
 call adb -s %deviceId% push %buildDir%\android-%arch%\bin\lldb-server %remoteDir%/ || goto :error
 call adb -s %deviceId% shell chmod 755 %remoteDir%/lldb-server || goto :error
 call adb forward --remove-all
@@ -29,15 +33,19 @@ call %pythonHome%\python.exe %lldbDir%\test\dotest.py ^
 --platform-working-dir %remoteDir% ^
 --env OS=Android -m
 
+SET testexitcode=%errorlevel%
+
 echo "Post Clean-Up"
 SET PATH=%PATH%;C:\Cygwin64\bin
 svn status %lldbDir%\test --no-ignore | grep "^[I?]" | cut -c 9- | sed 's:\\:/:g' | xargs rm
 adb -s %deviceID% shell ps | grep lldb-server | awk "{print $2}" | xargs adb -s %deviceID% shell kill
-adb -s %deviceID% shell rm -rf %remoteDir%/*
+adb -s %deviceID% shell rm -rf %remoteDir%
 
 :error
+if %testexitcode% NEQ 0 (
+    exit /b %testexitcode%
+)
 exit /b %errorlevel%
-cd %originalDir%
 
 :getNdkApi
 for %%a in (%ndkApiList%) do (
