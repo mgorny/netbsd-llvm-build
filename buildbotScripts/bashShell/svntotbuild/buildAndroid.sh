@@ -25,6 +25,7 @@ function cmakenbuild {
 }
 set -x
 cmakenbuild i386 x86
+cmakenbuild x86_64 x86_64
 cmakenbuild arm armeabi
 cmakenbuild aarch64 aarch64
 

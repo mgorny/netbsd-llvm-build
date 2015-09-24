@@ -1,5 +1,5 @@
 {
-    "test1": "emulator-5554,i686-linux-android-gcc,i386",
-    "test7": "015d4b339923ee09,arm-linux-androideabi-gcc,arm",
+    "test1": "emulator-5554,x86_64-linux-android-gcc,x86_64,API21",
+    "test7": "015d4b339923ee09,arm-linux-androideabi-gcc,arm,API16",
     "test8": "local,clang,x86_64"
 }
