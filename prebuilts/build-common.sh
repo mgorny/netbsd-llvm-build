@@ -107,7 +107,7 @@ esac
 
 commit_and_push()
 {
-    BRANCH=studio-1.4-dev
+    BRANCH=lldb-master-dev
     # check into a local git clone
     rm -rf $SCRATCH/prebuilts/$PROJ/
     mkdir -p $SCRATCH/prebuilts/$PROJ/
