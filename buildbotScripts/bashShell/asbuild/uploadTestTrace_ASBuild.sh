@@ -12,3 +12,4 @@ oldNum=$(( $1-500 ))
 echo remove old test trace of build $oldNum
 gsutil rm $gstrace/$2/build-$oldNum.zip || true
 eval $rmCmd
+rm -f $rootDir/*.zip

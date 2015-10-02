@@ -10,6 +10,7 @@ call rm -rf logs-*
 set /a oldNum=(%1-500)
 REM remove old test trace of build $oldNum
 gsutil rm %gstrace%/%2/build-%oldNum%.zip || true
+rm %rootDir%\*.zip
 
 :error
 exit /b %errorlevel%

@@ -24,6 +24,7 @@ function getNdkApi {
 
 set -x
 adb -s $deviceId shell getprop ro.build.fingerprint
+adb -s $deviceId shell ps | grep lldb-server | awk '{print $2}' | xargs adb -s $deviceId shell kill || true
 adb -s $deviceId shell rm -r $remoteDir || true
 adb -s $deviceId shell mkdir $remoteDir
 adb -s $deviceId push $buildDir/android-$arch/bin/lldb-server $remoteDir/
