@@ -6,7 +6,6 @@ export arch=${config[2]}
 function clean {
   adb -s $deviceId shell ps | grep lldb-server | awk '{print $2}' | xargs adb -s $deviceId shell kill
   adb -s $deviceId shell rm -r $remoteDir
-  rm -rf $lldbDir
 }
 trap clean EXIT
 
@@ -43,6 +42,7 @@ function getBinDir {
   fi
 }
 set -x
+rm -rf $lldbDir
 unzip -o $rootDir/lldb-tests-* -d $lldbDir/
 adb -s $deviceId shell getprop ro.build.fingerprint
 adb -s $deviceId shell ps | grep lldb-server | awk '{print $2}' | xargs adb -s $deviceId shell kill || true
@@ -59,7 +59,9 @@ apilevel=$(adb -s $deviceId shell getprop ro.build.version.sdk)
 apilevel=${apilevel//[[:space:]]/}
 
 ndkapi=$(getNdkApi $apilevel)
-cmd="$lldbDir/test/dotest.py \
+unset PYTHONPATH
+export PYTHONHOME=$buildDir
+cmd="$buildDir/bin/python $lldbDir/test/dotest.py \
 --executable $lldbPath \
 -A $arch -C $toolchain/$arch-$ndkapi/bin/$compiler \
 -s logs-$compiler-$arch -u CXXFLAGS -u CFLAGS \

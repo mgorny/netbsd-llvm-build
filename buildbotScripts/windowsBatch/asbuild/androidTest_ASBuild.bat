@@ -37,7 +37,7 @@ call :getNdkApi %sdkLevel%
 SET ndkapi=%errorlevel%
 
 SET PYTHONHOME=%buildDir%
-call %pythonExe%\python.exe %lldbDir%\test\dotest.py ^
+call %PYTHONHOME%\bin\python.exe %lldbDir%\test\dotest.py ^
 --executable %buildDir%\bin\lldb.exe ^
 -A %arch% -C %toolchain%/%arch%-%ndkapi%/bin/%compiler%.exe ^
 -s c:\logs\logs-gcc-%arch% -u CXXFLAGS -u CFLAGS ^
