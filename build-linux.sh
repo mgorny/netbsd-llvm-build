@@ -77,6 +77,7 @@ CMAKE_OPTIONS+=(-DLLVM_EXTERNAL_CLANG_SOURCE_DIR="$CLANG")
 
 mkdir -p "$INSTALL/host/"{bin,lib,include/lldb}
 cp -a "$BUILD/bin/"lldb*                             "$INSTALL/host/bin/"
+cp -a "$PYTHON_DIR/bin/"python*                      "$INSTALL/host/bin/"
 cp -a "$BUILD/lib/"{liblldb.so*,readline.so}         "$INSTALL/host/lib/"
 cp -a "$PREBUILTS/libedit/linux-x86/lib/"libedit.so* "$INSTALL/host/lib/"
 cp -a "$TOOLCHAIN/sysroot/usr/lib/"libtinfo.so*      "$INSTALL/host/lib/"
