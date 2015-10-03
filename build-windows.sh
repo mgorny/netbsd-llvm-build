@@ -66,7 +66,7 @@ PATH="$(cygpath -u 'C:\Windows\System32')" "${CMD[@]}"
 
 mkdir -p "$INSTALL/host/"{bin,lib,include/lldb,dlls}
 cp -a "$BUILD/bin/"{lldb.exe,liblldb.dll}         "$INSTALL/host/bin/"
-cp -a "$PYTHON_DIR/x86/python27.dll"              "$INSTALL/host/bin/"
+cp -a "$PYTHON_DIR/x86/"{python.exe,python27.dll} "$INSTALL/host/bin/"
 cp -a "$BUILD/lib/"{liblldb.lib,site-packages}    "$INSTALL/host/lib/"
 cp -a "$PYTHON_DIR/x86/Lib/"*                     "$INSTALL/host/lib/"
 cp -a "$PYTHON_DIR/x86/DLLs/"*.pyd                "$INSTALL/host/dlls/"
