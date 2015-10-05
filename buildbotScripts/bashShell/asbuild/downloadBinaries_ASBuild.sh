@@ -10,7 +10,6 @@ rm -rf $buildDir
 gsutil cp -r $gs_asbin_linux/$2/** .
 unzip -o lldb-tests-$2 -d $lldbDir/
 unzip -o lldb-android-$2 -d $buildDir/
-
 if [ $(uname) == Darwin ]
 then
   gsutil cp -r $gs_asbin_darwin/$2/** .
@@ -18,4 +17,5 @@ then
 else
   unzip -o lldb-linux-$2 -d $buildDir/
 fi
-
+cd $lldbDir
+find test -exec touch {} +
