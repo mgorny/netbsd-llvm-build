@@ -4,8 +4,8 @@ export deviceId=${config[0]}
 export compiler=${config[1]}
 export arch=${config[2]}
 function clean {
-  adb -s $deviceId shell ps | grep lldb-server | awk '{print $2}' | xargs adb -s $deviceId shell kill
-  adb -s $deviceId shell rm -r $remoteDir
+  adb -s $deviceId shell ps | grep lldb-server | awk '{print $2}' | xargs adb -s $deviceId shell kill || true
+  adb -s $deviceId shell rm -r $remoteDir || true
 }
 trap clean EXIT
 

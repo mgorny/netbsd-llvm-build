@@ -4,6 +4,7 @@ SET gs_asbin_windows=gs://android-build-lldb/builds/git_lldb-%1-windows-lldb_win
 cd ..
 rm -rf build
 rm -rf lldb
+rm -f *.zip
 call gsutil cp -r %gs_asbin_windows%/%2/** . || goto :error
 call gsutil cp -r %gs_asbin_linux%/%2/** . || goto :error
 call unzip -o lldb-tests-* -d lldb/ || goto :error

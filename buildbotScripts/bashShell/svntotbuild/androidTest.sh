@@ -4,9 +4,9 @@ export deviceId=${config[0]}
 export compiler=${config[1]}
 export arch=${config[2]}
 function clean {
-  svn status $lldbDir/test --no-ignore | grep '^[I?]' | cut -c 9- | while IFS= read -r f; do echo "$f"; rm -rf "$f"; done
-  adb -s $deviceId shell ps | grep lldb-server | awk '{print $2}' | xargs adb -s $deviceId shell kill
-  adb -s $deviceId shell rm -r $remoteDir
+  svn status $lldbDir/test --no-ignore | grep '^[I?]' | cut -c 9- | while IFS= read -r f; do echo "$f"; rm -rf "$f"; done || true
+  adb -s $deviceId shell ps | grep lldb-server | awk '{print $2}' | xargs adb -s $deviceId shell kill || true
+  adb -s $deviceId shell rm -r $remoteDir || true
 }
 trap clean EXIT
 
