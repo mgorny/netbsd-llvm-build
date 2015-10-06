@@ -50,7 +50,7 @@ ndkapi=$(getNdkApi $apilevel)
 cmd="$lldbDir/test/dotest.py \
 --executable $lldbPath \
 -A $arch -C $toolchain/$arch-$ndkapi/bin/$compiler \
--s logs-$compiler-$arch -u CXXFLAGS -u CFLAGS \
+-s logs-$compiler-$arch-$deviceId -u CXXFLAGS -u CFLAGS \
 --channel \"gdb-remote packets\" --channel \"lldb all\" \
 --platform-name remote-android \
 --platform-url adb://$deviceId:$port \

@@ -44,6 +44,9 @@ function getBinDir {
 set -x
 rm -rf $lldbDir
 unzip -o $rootDir/lldb-tests-* -d $lldbDir/
+cd $lldbDir
+find test -exec touch {} +
+cd $rootDir/scripts
 adb -s $deviceId shell getprop ro.build.fingerprint
 adb -s $deviceId shell ps | grep lldb-server | awk '{print $2}' | xargs adb -s $deviceId shell kill || true
 adb -s $deviceId shell rm -r $remoteDir || true
