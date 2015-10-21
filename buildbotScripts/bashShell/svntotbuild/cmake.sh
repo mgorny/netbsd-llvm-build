@@ -1,7 +1,7 @@
 #!/bin/bash -e
 set -x
 host=$(uname)
-if [[ $host != Linux ]];
+if [[ $host == Darwin ]];
 then
   echo "Skip cmake step for" $host
 else
