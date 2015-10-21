@@ -12,6 +12,7 @@ then
 else
   set -x
   cd $buildDir
-  nice -n 10 ninja -j40
+  JOBS=$(cat /proc/cpuinfo | grep -c processor)
+  nice -n 10 ninja -j$JOBS
 fi
 
