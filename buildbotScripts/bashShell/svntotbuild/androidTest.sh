@@ -48,9 +48,19 @@ apilevel=${apilevel//[[:space:]]/}
 
 ndkapi=$(getNdkApi $apilevel)
 
+if [[ $arch == mips ]]
+then
+  target=ips32r2
+elif [[ $arch == mips64 ]]
+then
+  target=ips64r2
+else
+  target=$arch
+fi
+
 cmd="$lldbDir/test/dotest.py \
 --executable $lldbPath \
--A $arch -C $toolchain/$arch-$ndkapi/bin/$compiler \
+-A $target -C $toolchain/$arch-$ndkapi/bin/$compiler \
 -s logs-$compiler-$arch-$deviceId -u CXXFLAGS -u CFLAGS \
 --channel \"gdb-remote packets\" --channel \"lldb all\" \
 --platform-name remote-android \
