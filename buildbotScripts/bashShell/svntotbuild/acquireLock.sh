@@ -1,4 +1,4 @@
-#!/bin/bash -e
+#!/usr/bin/env bash
 
 # This script ensures that only one build is running at a time
 # Work flow,
@@ -7,6 +7,7 @@
 #   if lock owner is current builder, then start build - this means last build terminated unexpectedly, lock was not released
 #   if lock owner is not current builder, keep polling until lock is released by other builders
 
+set -e
 source setEnv.sh
 function startBuild {
   echo $1 make dir successfully, start build

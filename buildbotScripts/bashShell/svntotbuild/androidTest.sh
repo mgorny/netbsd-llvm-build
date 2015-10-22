@@ -1,4 +1,5 @@
-#!/bin/bash -e
+#!/usr/bin/env bash
+set -e
 config=(${1//,/ })
 export deviceId=${config[0]}
 export compiler=${config[1]}

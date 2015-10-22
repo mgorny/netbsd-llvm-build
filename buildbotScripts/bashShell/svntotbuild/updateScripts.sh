@@ -1,4 +1,5 @@
-#!/bin/bash -e
+#!/usr/bin/env bash
+set -e
 set -x
 rm -rf *
 git clone https://android.googlesource.com/platform/external/lldb-utils -b lldb-master-dev

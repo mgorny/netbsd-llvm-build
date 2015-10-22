@@ -1,4 +1,5 @@
-#!/bin/bash -e
+#!/usr/bin/env bash
+set -e
 source setEnv.sh
 host=$(uname)
 if [[ $host == Darwin ]];

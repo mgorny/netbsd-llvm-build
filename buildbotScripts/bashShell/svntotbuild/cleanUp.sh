@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 source setEnv.sh
 
 if [ -d "$lldbDir" ] && [ $(uname) == Darwin ]

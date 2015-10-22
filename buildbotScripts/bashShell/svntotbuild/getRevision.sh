@@ -1,4 +1,5 @@
-#!/bin/bash -e
+#!/usr/bin/env bash
+set -e
 source setEnv.sh
 # turn off echo of commands
 # the entire output of this script will be used to set got_revision property of buildbot

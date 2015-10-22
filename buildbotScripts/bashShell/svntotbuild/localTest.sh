@@ -1,4 +1,5 @@
-#!/bin/bash -e
+#!/usr/bin/env bash
+set -e
 config=(${1//,/ })
 
 compiler=${config[1]}
