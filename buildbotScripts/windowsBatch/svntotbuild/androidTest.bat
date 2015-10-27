@@ -31,7 +31,8 @@ call %pythonHome%\python.exe %lldbDir%\test\dotest.py ^
 --platform-name remote-android ^
 --platform-url adb://%deviceId%:%port% ^
 --platform-working-dir %remoteDir% ^
---env OS=Android -m
+--env OS=Android ^
+--skip-category lldb-mi
 
 SET testexitcode=%errorlevel%
 
