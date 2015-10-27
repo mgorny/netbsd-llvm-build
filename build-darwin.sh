@@ -20,6 +20,15 @@ if [ ! "${BASH_SOURCE[1]}" ]; then
 	esac
 fi
 
+# need XCode 7
+xcode-select --switch /Applications/Xcode7.app/Contents/Developer
+
+function finish() {
+	xcode-select --reset
+}
+
+trap finish EXIT
+
 ln -fns "$LLVM" "$LLDB/"
 ln -fns "$CLANG" "$LLVM/tools/"
 
