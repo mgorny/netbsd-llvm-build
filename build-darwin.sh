@@ -21,7 +21,7 @@ if [ ! "${BASH_SOURCE[1]}" ]; then
 fi
 
 # need XCode 7
-export DEVELOPER_DIR=/Applications/Xcode7.app/Contents/Developer
+#export DEVELOPER_DIR=/Applications/Xcode7.app/Contents/Developer
 
 ln -fns "$LLVM" "$LLDB/"
 ln -fns "$CLANG" "$LLVM/tools/"
