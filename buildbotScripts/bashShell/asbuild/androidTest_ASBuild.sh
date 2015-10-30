@@ -64,7 +64,7 @@ apilevel=${apilevel//[[:space:]]/}
 ndkapi=$(getNdkApi $apilevel)
 unset PYTHONPATH
 export PYTHONHOME=$buildDir
-cmd="$lldbDir/test/dotest.py \
+cmd="$lldbDir/packages/Python/lldbsuite/test/dotest.py \
 --executable $lldbPath \
 -A $arch -C $toolchain/$arch-$ndkapi/bin/$compiler \
 -s logs-$compiler-$arch -u CXXFLAGS -u CFLAGS \

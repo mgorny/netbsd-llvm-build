@@ -14,14 +14,14 @@ host=$(uname)
 echo "uname: " $host
 if [ $host == Darwin ]
 then
-  cmd="$lldbDir/test/dotest.py \
+  cmd="$lldbDir/packages/Python/lldbsuite/test/dotest.py \
 --executable $lldbDir/build/Release/lldb \
 --framework $lldbDir/build/Release/LLDB.framework \
 -A $arch -C $compiler \
 -s logs-${config[1]}-$arch \
 -u CXXFLAGS -u CFLAGS"
 else
-  cmd="$lldbDir/test/dotest.py \
+  cmd="$lldbDir/packages/Python/lldbsuite/test/dotest.py \
 --executable $buildDir/bin/lldb \
 -A $arch -C $compiler \
 -s logs-${config[1]}-$arch \

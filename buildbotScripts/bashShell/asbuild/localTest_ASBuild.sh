@@ -10,7 +10,7 @@ then
 fi
 
 host=$(uname)
-cmd="$lldbDir/test/dotest.py \
+cmd="$lldbDir/packages/Python/lldbsuite/test/dotest.py \
 --executable $buildDir/bin/lldb \
 -A $arch -C $compiler \
 -s logs-${config[1]}-$arch \

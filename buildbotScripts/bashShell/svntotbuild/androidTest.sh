@@ -58,7 +58,7 @@ else
   target=$arch
 fi
 
-cmd="$lldbDir/test/dotest.py \
+cmd="$lldbDir/packages/Python/lldbsuite/test/dotest.py \
 --executable $lldbPath \
 -A $target -C $toolchain/$arch-$ndkapi/bin/$compiler \
 -s logs-$compiler-$arch-$deviceId -u CXXFLAGS -u CFLAGS \
