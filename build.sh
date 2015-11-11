@@ -64,6 +64,9 @@ INSTALL="$OUT/lldb/install"
 rm -rf "$BUILD" "$INSTALL"
 mkdir -p "$BUILD" "$INSTALL"
 
+# print commands for easier debugging
+set -x
+
 source "$ROOT_DIR/external/lldb-utils/build-${OS}.sh"
 
 if [ $OS == linux ]; then
