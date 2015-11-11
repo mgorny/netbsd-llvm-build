@@ -71,5 +71,5 @@ source "$ROOT_DIR/external/lldb-utils/build-${OS}.sh"
 
 if [ $OS == linux ]; then
 	source "$ROOT_DIR/external/lldb-utils/build-android.sh"
-	(cd "$LLDB" && zip --symlinks -r "$DEST/lldb-tests-${BNUM}.zip" test resources)
+	(cd "$LLDB" && zip --symlinks -r "$DEST/lldb-tests-${BNUM}.zip" test packages resources)
 fi
