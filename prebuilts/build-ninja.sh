@@ -10,7 +10,7 @@ PROJ=ninja
 VER=1.5.3
 MSVS=2013
 
-source "$(dirname "${BASH_SOURCE[0]}")/build-common.sh"
+source "$(dirname "${BASH_SOURCE[0]}")/build-common.sh" "$@"
 
 # needed for cygwin
 export PATH="$PATH":.
@@ -28,5 +28,4 @@ fi
 # install
 cp $RD/src/ninja $INSTALL
 
-commit_and_push
-
+finalize_build

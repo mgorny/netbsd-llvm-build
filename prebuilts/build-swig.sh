@@ -10,7 +10,7 @@
 PROJ=swig
 VER=2.0.11
 
-source "$(dirname "${BASH_SOURCE[0]}")/build-common.sh"
+source "$(dirname "${BASH_SOURCE[0]}")/build-common.sh" "$@"
 
 TGZ=$PROJ-$VER.tar.gz
 curl -L http://downloads.sourceforge.net/project/swig/swig/$PROJ-$VER/$TGZ -o $TGZ
@@ -29,4 +29,4 @@ make install
 cd $INSTALL/bin
 ln -s swig swig2.0
 
-commit_and_push
+finalize_build

@@ -11,7 +11,7 @@ PROJ=cmake
 VER=3.2.3
 MSVS=2013
 
-source "$(dirname "${BASH_SOURCE[0]}")/build-common.sh"
+source "$(dirname "${BASH_SOURCE[0]}")/build-common.sh" "$@"
 
 TGZ=$PROJ-$VER.tar.gz  # has \n line feeds
 curl -L http://www.cmake.org/files/v3.2/$TGZ -o $TGZ
@@ -39,4 +39,4 @@ esac
 make -j$CORES
 make install
 
-commit_and_push
+finalize_build

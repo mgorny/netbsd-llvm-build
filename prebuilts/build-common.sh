@@ -4,27 +4,69 @@
 # inputs
 # $PROJ - project name
 # $VER - project version
-# $1 - name of this file
+# $1 - (temporary) output directory
+# $2 - build directory for build artefacts
+# $3 - build number
 #
 # this file does the following:
 #
 # 1) define the following env vars
 #    OS - linux|darwin|windows
-#    USER - username
 #    CORES - numer of cores (for parallel builds)
 #    PATH (with appropriate compilers)
 #    CFLAGS/CXXFLAGS/LDFLAGS
 #    RD - root directory for source and object files
-#    INSTALL - install directory/git repo root
+#    INSTALL - install directory
 #    SCRIPT_FILE - absolute path to the parent build script
 #    SCRIPT_DIR - absolute path to the parent build script's directory
 #    COMMON_FILE - absolute path to this file
-# 2) create an empty tmp directory at /tmp/$PROJ-$USER
-# 3) checkout the destination git repo to /tmp/prebuilts/$PROJ/$OS-x86/$VER
-# 4) cd $RD
+# 2) cd $RD
+#
+# after placing all your build products into $INSTALL you should call finalize_build to produce
+# the final build artifact
+
+# exit on error
+set -e
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[1]}")" && pwd -P)"
+SCRIPT_FILE="$SCRIPT_DIR/$(basename "${BASH_SOURCE[1]}")"
+COMMON_FILE="$SCRIPT_DIR/$(basename "${BASH_SOURCE[0]}")"
+
+# calculate the root directory from the script path
+# this script lives two directories down from the root
+# external/lldb-utils/prebuilts/build-common.sh
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd -P)"
+cd "$ROOT_DIR"
+
+function die() {
+	echo "$*" > /dev/stderr
+	echo "Usage: $0 <out_dir> <dest_dir> <build_number>" > /dev/stderr
+	exit 1
+}
+
+(($# > 3)) && die "[$0] Unknown parameter: $4"
+
+OUT="$1"
+DEST="$2"
+BNUM="$3"
+
+[ ! "$OUT"  ] && die "## Error: Missing out folder"
+[ ! "$DEST" ] && die "## Error: Missing destination folder"
+[ ! "$BNUM" ] && die "## Error: Missing build number"
+
+mkdir -p "$OUT" "$DEST"
+OUT="$(cd "$OUT" && pwd -P)"
+DEST="$(cd "$DEST" && pwd -P)"
+
+cat <<END_INFO
+## Building $PROJ ##
+## Out Dir  : $OUT
+## Dest Dir : $DEST
+## Build Num: $BNUM
+
+END_INFO
 
 UNAME="$(uname)"
-SCRATCH=/tmp
 UPSTREAM=https://android.googlesource.com/platform/prebuilts
 case "$UNAME" in
 Linux)
@@ -42,7 +84,6 @@ Darwin)
     INSTALL_VER=$VER
     ;;
 *_NT-*)
-    USER=$USERNAME
     OS='windows'
     CORES=$NUMBER_OF_PROCESSORS
     # VS2013 x64 Native Tools Command Prompt
@@ -66,12 +107,8 @@ Darwin)
     ;;
 esac
 
-RD=$SCRATCH/$PROJ-$USER
+RD=$OUT/$PROJ
 INSTALL="$RD/install"
-
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[1]}")" && pwd -P)"
-SCRIPT_FILE="$SCRIPT_DIR/$(basename "${BASH_SOURCE[1]}")"
-COMMON_FILE="$SCRIPT_DIR/$(basename "${BASH_SOURCE[0]}")"
 
 cd /tmp # windows can't delete if you're in the dir
 rm -rf $RD
@@ -105,26 +142,7 @@ linux)
     ;;
 esac
 
-commit_and_push()
-{
-    BRANCH=lldb-master-dev
-    # check into a local git clone
-    rm -rf $SCRATCH/prebuilts/$PROJ/
-    mkdir -p $SCRATCH/prebuilts/$PROJ/
-    cd $SCRATCH/prebuilts/$PROJ/
-    git clone $UPSTREAM/$PROJ/$OS-x86 -b $BRANCH
-    GIT_REPO="$SCRATCH/prebuilts/$PROJ/$OS-x86"
-    cd $GIT_REPO
-    rm -rf *
-    mv $INSTALL/* $GIT_REPO
-    cp $SCRIPT_FILE $GIT_REPO
-    cp $COMMON_FILE $GIT_REPO
-
-    git add .
-    git commit -m "Adding binaries for $INSTALL_VER"
-
-    # execute this command to upload
-    #git push origin HEAD:refs/for/$BRANCH
-
-    rm -rf $RD
+function finalize_build() {
+    cp "$SCRIPT_FILE" "$COMMON_FILE" "$INSTALL"
+    (cd "$INSTALL" && zip --symlinks -r "$DEST/$PROJ-$BNUM.zip" .)
 }

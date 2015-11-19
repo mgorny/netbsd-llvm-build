@@ -10,7 +10,7 @@
 PROJ=libedit
 VER=20150325-3.1
 
-source "$(dirname "${BASH_SOURCE[0]}")/build-common.sh"
+source "$(dirname "${BASH_SOURCE[0]}")/build-common.sh" "$@"
 
 BASE=$PROJ-$VER
 TGZ=$BASE.tar.gz
@@ -25,5 +25,4 @@ $RD/$BASE/configure --prefix=$INSTALL
 make -j$CORES
 make install
 
-commit_and_push
-
+finalize_build
