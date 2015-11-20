@@ -33,9 +33,9 @@ SCRIPT_FILE="$SCRIPT_DIR/$(basename "${BASH_SOURCE[1]}")"
 COMMON_FILE="$SCRIPT_DIR/$(basename "${BASH_SOURCE[0]}")"
 
 # calculate the root directory from the script path
-# this script lives two directories down from the root
+# this script lives three directories down from the root
 # external/lldb-utils/prebuilts/build-common.sh
-ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd -P)"
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../.." && pwd -P)"
 cd "$ROOT_DIR"
 
 function die() {
