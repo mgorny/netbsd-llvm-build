@@ -10,21 +10,27 @@ then
   compiler=$buildDir/bin/clang
 fi
 
+if [ "${compiler:0:1}" == "/" ]
+then
+  ccdir=$(dirname "${compiler}")/..
+  envCmd="LD_LIBRARY_PATH=$ccdir/lib64:$ccdir/lib32:$ccdir/lib"
+fi
+cc_log=${config[1]////-}
 host=$(uname)
 echo "uname: " $host
 if [ $host == Darwin ]
 then
-  cmd="$lldbDir/test/dotest.py \
+  cmd="$envCmd $lldbDir/test/dotest.py \
 --executable $lldbDir/build/Release/lldb \
 --framework $lldbDir/build/Release/LLDB.framework \
 -A $arch -C $compiler \
 -s logs-${config[1]}-$arch \
 -u CXXFLAGS -u CFLAGS"
 else
-  cmd="$lldbDir/test/dotest.py \
+  cmd="$envCmd $lldbDir/test/dotest.py \
 --executable $buildDir/bin/lldb \
 -A $arch -C $compiler \
--s logs-${config[1]}-$arch \
+-s logs-$cc_log-$arch \
 -u CXXFLAGS -u CFLAGS \
 --channel \"gdb-remote packets\" \
 --channel \"lldb all\""
