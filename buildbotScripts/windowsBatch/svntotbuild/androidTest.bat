@@ -28,6 +28,7 @@ call %pythonHome%\python.exe %lldbDir%\test\dotest.py ^
 --executable %buildDir%\bin\lldb.exe ^
 -A %arch% -C %toolchain%/%arch%-%ndkapi%/bin/%compiler%.exe ^
 -s c:\logs\logs-gcc-%arch% -u CXXFLAGS -u CFLAGS ^
+--channel "gdb-remote packets" --channel "lldb all" ^
 --platform-name remote-android ^
 --platform-url adb://%deviceId%:%port% ^
 --platform-working-dir %remoteDir% ^
