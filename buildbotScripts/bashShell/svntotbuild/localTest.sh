@@ -24,13 +24,13 @@ then
 --executable $lldbDir/build/Release/lldb \
 --framework $lldbDir/build/Release/LLDB.framework \
 -A $arch -C $compiler \
--s logs-${config[1]}-$arch \
+-v -s logs-${config[1]}-$arch \
 -u CXXFLAGS -u CFLAGS"
 else
   cmd="$envCmd $lldbDir/test/dotest.py \
 --executable $buildDir/bin/lldb \
 -A $arch -C $compiler \
--s logs-$cc_log-$arch \
+-v -s logs-$cc_log-$arch \
 -u CXXFLAGS -u CFLAGS \
 --channel \"gdb-remote packets\" \
 --channel \"lldb all\""
