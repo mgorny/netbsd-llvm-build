@@ -61,7 +61,7 @@ fi
 cmd="$lldbDir/test/dotest.py \
 --executable $lldbPath \
 -A $target -C $toolchain/$arch-$ndkapi/bin/$compiler \
--s logs-$compiler-$arch-$deviceId -u CXXFLAGS -u CFLAGS \
+-v -s logs-$compiler-$arch-$deviceId -u CXXFLAGS -u CFLAGS \
 --channel \"gdb-remote packets\" --channel \"lldb all\" \
 --platform-name remote-android \
 --platform-url adb://$deviceId:$port \
