@@ -58,9 +58,20 @@ else
   target=$arch
 fi
 
+if [[ $compiler == *-clang* ]]
+then
+  if [ $apilevel == 23 ]
+  then
+    ndkapi=23
+  fi
+  ndkdir=$arch-$ndkapi-clang
+else
+  ndkdir=$arch-$ndkapi
+fi
+
 cmd="$lldbDir/test/dotest.py \
 --executable $lldbPath \
--A $target -C $toolchain/$arch-$ndkapi/bin/$compiler \
+-A $target -C $toolchain/$ndkdir/bin/$compiler \
 -v -s logs-$compiler-$arch-$deviceId -u CXXFLAGS -u CFLAGS \
 --channel \"gdb-remote packets\" --channel \"lldb all\" \
 --platform-name remote-android \
