@@ -41,6 +41,7 @@ SET PATH=%PATH%;C:\Cygwin64\bin
 svn status %lldbDir%\test --no-ignore | grep "^[I?]" | cut -c 9- | sed 's:\\:/:g' | xargs rm
 adb -s %deviceID% shell ps | grep lldb-server | awk "{print $2}" | xargs adb -s %deviceID% shell kill
 adb -s %deviceID% shell rm -rf %remoteDir%
+call taskkill /f /im "adb.exe"
 
 :error
 if %testexitcode% NEQ 0 (
