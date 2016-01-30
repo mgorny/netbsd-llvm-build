@@ -26,7 +26,7 @@ fi
 ln -fns "$LLVM" "$LLDB/"
 ln -fns "$CLANG" "$LLVM/tools/"
 
-export PATH="$SWIG_DIR/bin:/usr/sbin:/usr/bin:/bin"
+export PATH="$NINJA_DIR:$CMAKE_DIR/bin:$SWIG_DIR/bin:/usr/sbin:/usr/bin:/bin"
 
 # we don't need code signing
 function codesign() { :; }

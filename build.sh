@@ -52,8 +52,10 @@ case "$(uname -s)" in
 esac
 
 PREBUILTS="$ROOT_DIR/prebuilts"
-NINJA="$PREBUILTS/ninja/${OS}-x86/ninja"
-CMAKE="$PREBUILTS/cmake/${OS}-x86/bin/cmake"
+NINJA_DIR="$PREBUILTS/ninja/${OS}-x86"
+NINJA="$NINJA_DIR/ninja"
+CMAKE_DIR="$PREBUILTS/cmake/${OS}-x86"
+CMAKE="$CMAKE_DIR/bin/cmake"
 SWIG_DIR="$PREBUILTS/swig/${OS}-x86"
 PYTHON_DIR="$PREBUILTS/python/${OS}-x86"
 
