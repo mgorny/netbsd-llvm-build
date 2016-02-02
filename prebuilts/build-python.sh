@@ -24,8 +24,8 @@ windows)
 	devenv PCbuild/pcbuild.sln /Upgrade
         # Not all projects will build (due to missing dependencies), so we build only a selected
         # set. The rest are not needed for our purposes anyway.
-	for project in _ctypes _ctypes_test _elementtree _multiprocessing _socket _testcapi
-		bdist_wininst kill_python make_buildinfo make_versioninfo pyexpat python
+	for project in _ctypes _ctypes_test _elementtree _multiprocessing _socket _testcapi \
+		bdist_wininst kill_python make_buildinfo make_versioninfo pyexpat python \
 		pythoncore pythonw select unicodedata w9xpopen winsound; do
 
 		devenv PCbuild/pcbuild.sln /Build Debug /Project $project
