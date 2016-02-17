@@ -4,65 +4,62 @@
 # $2 = dest_dir
 # $3 = build_number
 
-# exit on error
-set -e
+OS=windows
 
-if [ ! "${BASH_SOURCE[1]}" ]; then
-	case "$(uname -s)" in
-		*_NT-*)
-			ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd -P)"
-			source "$ROOT_DIR/external/lldb-utils/build.sh" "$@"
-			exit 0
-			;;
-		*)
-			echo "No." > /dev/stderr
-			exit 1
-	esac
-fi
+LLDB_UTILS=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)
+source "$LLDB_UTILS/build-common.sh" "$@"
 
 # path too long
-TMP="$(mktemp -d)"
+TMP=$(mktemp --directory)
 mv "$LLVM" "$LLDB" "$CLANG" "$TMP/"
-LLVM="$TMP/llvm"
-LLDB="$TMP/lldb"
-CLANG="$TMP/clang"
+LLVM=$TMP/llvm
+LLDB=$TMP/lldb
+CLANG=$TMP/clang
 
 function finish() {
-	# move these back
-	mv "$LLVM" "$LLDB" "$CLANG" "$ROOT_DIR/external/"
-	rmdir "$TMP"
+	# make sure nothing's holding these open
+	wait
+	# move these back; ignoring failures
+	mv "$LLVM" "$LLDB" "$CLANG" "$ROOT_DIR/external/" || true
+	rm -rf "$TMP"
 }
 
 trap finish EXIT
 
-export SWIG_LIB="$(cygpath -w "$SWIG_LIB")"
+export SWIG_LIB=$(cygpath --windows "$SWIG_LIB")
 
 CONFIG=Release
 
 unset CMAKE_OPTIONS
 CMAKE_OPTIONS+=(-GNinja)
-CMAKE_OPTIONS+=("$(cygpath -w "$LLVM")")
-CMAKE_OPTIONS+=(-DCMAKE_MAKE_PROGRAM="$(cygpath -w "${NINJA}.exe")")
-CMAKE_OPTIONS+=(-DCMAKE_BUILD_TYPE=$CONFIG)
-CMAKE_OPTIONS+=(-DSWIG_DIR="$(cygpath -w "$SWIG_DIR")")
-CMAKE_OPTIONS+=(-DSWIG_EXECUTABLE="$(cygpath -w "$SWIG_DIR/bin/swig.exe")")
+CMAKE_OPTIONS+=(-H"$(cygpath --windows "$LLVM")")
+CMAKE_OPTIONS+=(-B"$(cygpath --windows "$BUILD")")
+CMAKE_OPTIONS+=(-DCMAKE_MAKE_PROGRAM="$(cygpath --windows "$NINJA.exe")")
+CMAKE_OPTIONS+=(-DCMAKE_BUILD_TYPE="$CONFIG")
+CMAKE_OPTIONS+=(-DSWIG_DIR="$(cygpath --windows "$SWIG_DIR")")
+CMAKE_OPTIONS+=(-DSWIG_EXECUTABLE="$(cygpath --windows "$SWIG_DIR/bin/swig.exe")")
 CMAKE_OPTIONS+=(-DLLDB_RELOCATABLE_PYTHON=1)
-CMAKE_OPTIONS+=(-DPYTHON_HOME="$(cygpath -w "$PYTHON_DIR/x86")")
+CMAKE_OPTIONS+=(-DPYTHON_HOME="$(cygpath --windows "$PYTHON_DIR/x86")")
 CMAKE_OPTIONS+=(-DLLVM_TARGETS_TO_BUILD="X86;ARM;AArch64;Mips;Hexagon")
-CMAKE_OPTIONS+=(-DCMAKE_INSTALL_PREFIX="$(cygpath -w "$INSTALL/host")")
-CMAKE_OPTIONS+=(-DLLVM_EXTERNAL_LLDB_SOURCE_DIR="$(cygpath -w "$LLDB")")
-CMAKE_OPTIONS+=(-DLLVM_EXTERNAL_CLANG_SOURCE_DIR="$(cygpath -w "$CLANG")")
+CMAKE_OPTIONS+=(-DCMAKE_INSTALL_PREFIX="$(cygpath --windows "$INSTALL/host")")
+CMAKE_OPTIONS+=(-DLLVM_EXTERNAL_LLDB_SOURCE_DIR="$(cygpath --windows "$LLDB")")
+CMAKE_OPTIONS+=(-DLLVM_EXTERNAL_CLANG_SOURCE_DIR="$(cygpath --windows "$CLANG")")
 
-unset CMD
-CMD+=(cmd /c "${VS120COMNTOOLS}VsDevCmd.bat")
-CMD+=('&&' cd "$(cygpath -w "$BUILD")")
-CMD+=('&&' "$(cygpath -w "${CMAKE}.exe")" "${CMAKE_OPTIONS[@]}")
-CMD+=('&&' "$(cygpath -w "${NINJA}.exe")" lldb finish_swig)
+cat > "$TMP/commands.bat" <<-EOF
+	@echo off
+	set PATH=C:\\Windows\\System32
+	set CMAKE=$(cygpath --windows "${CMAKE}.exe")
+	set BUILD=$(cygpath --windows "$BUILD")
+	call "${VS120COMNTOOLS}VsDevCmd.bat"
+	"%CMAKE%" $(printf '"%s" ' "${CMAKE_OPTIONS[@]}")
+	"%CMAKE%" --build "%BUILD%" --target lldb
+	"%CMAKE%" --build "%BUILD%" --target finish_swig
+	@rem Too large and missing site-packages - http://llvm.org/pr24378
+	@rem "%CMAKE%" --build "%BUILD%" --target install
+EOF
 
-# Too large and missing site-packages - http://llvm.org/pr24378
-#CMD+=('&&' "$NINJA" install)
-
-PATH="$(cygpath -u 'C:\Windows\System32')" "${CMD[@]}"
+cmd /c "$(cygpath --windows "$TMP/commands.bat")"
+rm "$TMP/commands.bat"
 
 mkdir -p "$INSTALL/host/"{bin,lib,include/lldb,dlls}
 cp -a "$BUILD/bin/"{lldb.exe,liblldb.dll}         "$INSTALL/host/bin/"
@@ -82,4 +79,6 @@ PRUNE+=(-or -name 'lib2to3')
 PRUNE+=(-or -name 'test')
 find "$INSTALL/host/lib/" '(' "${PRUNE[@]}" ')' -prune -exec rm -r {} +
 
-(cd "$INSTALL/host" && zip -r "$DEST/lldb-windows-${BNUM}.zip" .)
+pushd "$INSTALL/host"
+zip --filesync --recurse-paths "$DEST/lldb-windows-$BNUM.zip" .
+popd

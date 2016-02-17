@@ -4,29 +4,15 @@
 # $2 = dest_dir
 # $3 = build_number
 
-# exit on error
-set -e
+OS=darwin
 
-if [ ! "${BASH_SOURCE[1]}" ]; then
-	case "$(uname -s)" in
-		Darwin)
-			ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd -P)"
-			source "$ROOT_DIR/external/lldb-utils/build.sh" "$@"
-			exit 0
-			;;
-		*)
-			echo "No." > /dev/stderr
-			exit 1
-	esac
-fi
-
-# need XCode 7
-#export DEVELOPER_DIR=/Applications/Xcode7.app/Contents/Developer
+LLDB_UTILS=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)
+source "$LLDB_UTILS/build-common.sh" "$@"
 
 ln -fns "$LLVM" "$LLDB/"
 ln -fns "$CLANG" "$LLVM/tools/"
 
-export PATH="$NINJA_DIR:$CMAKE_DIR/bin:$SWIG_DIR/bin:/usr/sbin:/usr/bin:/bin"
+export PATH=$NINJA_DIR:$CMAKE_DIR/bin:$SWIG_DIR/bin:/usr/sbin:/usr/bin:/bin
 
 # we don't need code signing
 function codesign() { :; }
@@ -37,12 +23,13 @@ CONFIG=Release
 unset XCODEBUILD_OPTIONS
 unset PRUNE
 
-XCODEBUILD_OPTIONS+=(-configuration $CONFIG)
+XCODEBUILD_OPTIONS+=(-project "$LLDB/lldb.xcodeproj")
+XCODEBUILD_OPTIONS+=(-configuration "$CONFIG")
 XCODEBUILD_OPTIONS+=(-target desktop)
 XCODEBUILD_OPTIONS+=(OBJROOT="$BUILD")
 XCODEBUILD_OPTIONS+=(SYMROOT="$BUILD")
 
-(cd "$LLDB" && xcodebuild "${XCODEBUILD_OPTIONS[@]}")
+xcodebuild "${XCODEBUILD_OPTIONS[@]}"
 
 mkdir -p "$INSTALL/host/include/lldb"
 cp -a "$BUILD/$CONFIG/"{lldb,LLDB.framework}      "$INSTALL/host/"
@@ -59,4 +46,6 @@ PRUNE+=( -or -name lldb-server)
 # zip file is huge, need to prune
 find "$INSTALL/host/LLDB.framework" '(' "${PRUNE[@]}" ')' -exec rm -rf {} +
 
-(cd "$INSTALL/host" && zip -r --symlinks "$DEST/lldb-mac-${BNUM}.zip" .)
+pushd "$INSTALL/host"
+zip --filesync --recurse-paths --symlinks "$DEST/lldb-mac-$BNUM.zip" .
+popd
