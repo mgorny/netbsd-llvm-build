@@ -1,42 +1,41 @@
-#!/bin/bash -ex
-# latest version of this file can be found at
-# https://android.googlesource.com/platform/external/lldb-utils
-#
-# Download & build cmake on the local machine
-# works on Linux, OSX, and Windows (Git Bash)
-# leaves output in /tmp/prebuilts/cmake/$OS-x86
-# cmake must be installed on Windows
+#!/bin/bash
+# Expected arguments:
+# $1 = out_dir
+# $2 = dest_dir
+# $3 = build_number
 
-PROJ=cmake
-VER=3.2.3
+PROJECT=cmake
 MSVS=2013
 
-source "$(dirname "${BASH_SOURCE[0]}")/build-common.sh" "$@"
+SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)
+source "$SCRIPT_DIR/build-common.sh" "$@"
 
-TGZ=$PROJ-$VER.tar.gz  # has \n line feeds
-curl -L http://www.cmake.org/files/v3.2/$TGZ -o $TGZ
-tar xzf $TGZ
-mkdir $RD/build
-cd $RD/build
+set -x
 
 case "$OS" in
 windows)
-    #cmake -G "Visual Studio 12 2013" "$(cygpath -w $RD/$PROJ-$VER)"
-    #devenv.com CMake.sln /Build Release /Out log.txt
-    cmake -G "Unix Makefiles"  -DCMAKE_INSTALL_PREFIX:PATH="$(cygpath -w $INSTALL)" "$(cygpath -w $RD/$PROJ-$VER)" -DCMAKE_BUILD_TYPE=Release
-    ;;
-linux)
-	unset CC
-	unset CXX
-	unset CFLAGS
-	unset CXXFLAGS
-    $RD/$PROJ-$VER/configure --prefix=$INSTALL
-    ;;
-darwin)
-    $RD/$PROJ-$VER/configure --prefix=$INSTALL
-    ;;
+	CMAKE_DIR=$PREBUILTS/cmake/windows-x86
+	DEPENDENCIES+=("$CMAKE_DIR")
+	cat > "$BUILD/commands.bat" <<-EOF
+		set PATH=C:\\Windows\\System32
+		call "$VS_DEV_CMD"
+		set SOURCE=$(cygpath --windows "$SOURCE")
+		set BUILD=$(cygpath --windows "$BUILD")
+		set INSTALL=$(cygpath --windows "$INSTALL")
+		set CMAKE=$(cygpath --windows "$CMAKE_DIR/bin/cmake.exe")
+		"%CMAKE%" -H"%SOURCE%" -B"%BUILD%" -DCMAKE_INSTALL_PREFIX="%INSTALL%"
+		"%CMAKE%" --build "%BUILD%" --target Release
+		"%CMAKE%" --build "%BUILD%" --target install
+	EOF
+	cmd /c "$(cygpath --windows "$BUILD/commands.bat")"
+	;;
+*)
+	pushd "$BUILD"
+	"$SOURCE/configure" --prefix=
+	make -j"$CORES"
+	make DESTDIR="$INSTALL" install/strip
+	popd
+	;;
 esac
-make -j$CORES
-make install
 
 finalize_build
