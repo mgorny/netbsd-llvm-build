@@ -5,8 +5,9 @@ SET llvmDir=%rootDir%\llvm
 SET lldbDir=%llvmDir%\tools\lldb
 SET clangDir=%llvmDir%\tools\clang
 SET buildDir=%rootDir%\build
-SET pythonHome=C:\Users\lldb_build\ll\prebuilts\python\x86
+SET pythonHome=C:\Users\lldb_build\ll\prebuilts\python-2015\x86
 SET remoteDir=/data/local/tmp/lldb
 SET toolchain=C:/Toolchains
 SET port=5430
 SET lockDir=c:\tmp\lock\lldbbuild.exclusivelock
+call "%VS140COMNTOOLS%\VsDevCmd.bat"
