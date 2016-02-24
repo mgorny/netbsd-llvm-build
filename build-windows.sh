@@ -50,7 +50,7 @@ cat > "$TMP/commands.bat" <<-EOF
 	set PATH=C:\\Windows\\System32
 	set CMAKE=$(cygpath --windows "${CMAKE}.exe")
 	set BUILD=$(cygpath --windows "$BUILD")
-	call "${VS120COMNTOOLS}VsDevCmd.bat"
+	call "${VS140COMNTOOLS}VsDevCmd.bat"
 	"%CMAKE%" $(printf '"%s" ' "${CMAKE_OPTIONS[@]}")
 	"%CMAKE%" --build "%BUILD%" --target lldb
 	"%CMAKE%" --build "%BUILD%" --target finish_swig
