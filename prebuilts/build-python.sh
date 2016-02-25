@@ -5,7 +5,7 @@
 # $3 = build_number
 
 PROJECT=python
-MSVS=2013
+MSVS=2015
 
 SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)
 source "$SCRIPT_DIR/build-common.sh" "$@"
