@@ -23,7 +23,10 @@ windows)
 		set BUILD=$(cygpath --windows "$BUILD")
 		set INSTALL=$(cygpath --windows "$INSTALL")
 		set CMAKE=$(cygpath --windows "$CMAKE_DIR/bin/cmake.exe")
-		"%CMAKE%" -H"%SOURCE%" -B"%BUILD%" -DCMAKE_INSTALL_PREFIX="%INSTALL%"
+		"%CMAKE%" \
+			-G"$CMAKE_GENERATOR" \
+			-H"%SOURCE%" -B"%BUILD%" \
+			-DCMAKE_INSTALL_PREFIX="%INSTALL%"
 		"%CMAKE%" --build "%BUILD%" --target Release
 		"%CMAKE%" --build "%BUILD%" --target install
 	EOF

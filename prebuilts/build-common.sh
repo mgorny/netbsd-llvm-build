@@ -138,13 +138,16 @@ case "$(uname)" in
 
 		case "$MSVS" in
 			2013)
-				VS_DEV_CMD=${VS120COMNTOOLS}VsDevCmd.bat
+				CMAKE_GENERATOR='Visual Studio 12 2013'
+				VSCOMNTOOLS=$VS120COMNTOOLS
 				;;
 			2015)
-				VS_DEV_CMD=${VS140COMNTOOLS}VsDevCmd.bat
+				CMAKE_GENERATOR='Visual Studio 14 2015'
+				VSCOMNTOOLS=$VS140COMNTOOLS
 				;;
 		esac
 
+		VS_DEV_CMD=${VSCOMNTOOLS}VsDevCmd.bat
 		function devenv() {
 			cmd /c "$VS_DEV_CMD" '&' devenv.com "$@"
 		}
