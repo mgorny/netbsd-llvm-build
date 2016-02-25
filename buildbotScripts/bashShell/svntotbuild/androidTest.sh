@@ -4,6 +4,7 @@ config=(${1//,/ })
 export deviceId=${config[0]}
 export compiler=${config[1]}
 export arch=${config[2]}
+export socket=${config[3]}
 function clean {
   svn status $lldbDir/test --no-ignore | grep '^[I?]' | cut -c 9- | while IFS= read -r f; do echo "$f"; rm -rf "$f"; done || true
   adb -s $deviceId shell ps | grep lldb-server | awk '{print $2}' | xargs adb -s $deviceId shell kill || true
@@ -30,7 +31,17 @@ adb -s $deviceId shell rm -r $remoteDir || true
 adb -s $deviceId shell mkdir $remoteDir
 adb -s $deviceId push $buildDir/android-$arch/bin/lldb-server $remoteDir/
 adb forward --remove-all
-screen -d -m adb -s $deviceId shell TMPDIR=$remoteDir/tmp $remoteDir/lldb-server platform --listen 127.0.0.1:$port --server
+
+if [ "$socket" == "abstract" ]
+then
+  socket_name=lldb-platform.sock
+  listen_url=unix-abstract://$remoteDir/$socket_name
+  connect_url=unix-abstract-connect://$deviceId$remoteDir/$socket_name
+else
+  listen_url=127.0.0.1:$port
+  connect_url=connect://$deviceId:$port
+fi
+screen -d -m adb -s $deviceId shell TMPDIR=$remoteDir/tmp $remoteDir/lldb-server platform --listen $listen_url --server
 
 export LLDB_TEST_THREADS=8
 
@@ -75,7 +86,7 @@ cmd="$lldbDir/test/dotest.py \
 -v -s logs-$compiler-$arch-$deviceId -u CXXFLAGS -u CFLAGS \
 --channel \"gdb-remote packets\" --channel \"lldb all\" \
 --platform-name remote-android \
---platform-url adb://$deviceId:$port \
+--platform-url $connect_url \
 --platform-working-dir $remoteDir \
 --env OS=Android \
 --skip-category lldb-mi"
