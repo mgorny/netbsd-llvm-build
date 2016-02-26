@@ -1,0 +1,87 @@
+From 59fb06a936da0750346e93c96873d3ff59200dcd Mon Sep 17 00:00:00 2001
+From: Pavel Labath <labath@google.com>
+Date: Thu, 25 Feb 2016 12:35:28 -0800
+Subject: [PATCH 2/2] Fix build for Visual Studio 2015.
+
+---
+ Include/fileobject.h  | 5 +----
+ Modules/posixmodule.c | 4 ++--
+ Modules/timemodule.c  | 8 ++++----
+ 3 files changed, 7 insertions(+), 10 deletions(-)
+
+diff --git a/Include/fileobject.h b/Include/fileobject.h
+index 1b540f9..434605d 100644
+--- a/Include/fileobject.h
++++ b/Include/fileobject.h
+@@ -70,16 +70,13 @@ size_t Py_UniversalNewlineFread(char *, size_t, FILE *, PyObject *);
+ */
+ int _PyFile_SanitizeMode(char *mode);
+ 
+-#if defined _MSC_VER && _MSC_VER >= 1400
++#if defined _MSC_VER && _MSC_VER < 1900
+ /* A routine to check if a file descriptor is valid on Windows.  Returns 0
+  * and sets errno to EBADF if it isn't.  This is to avoid Assertions
+  * from various functions in the Windows CRT beginning with
+  * Visual Studio 2005
+  */
+ int _PyVerify_fd(int fd);
+-#elif defined _MSC_VER && _MSC_VER >= 1200
+-/* fdopen doesn't set errno EBADF and crashes for large fd on debug build */
+-#define _PyVerify_fd(fd) (_get_osfhandle(fd) >= 0)
+ #else
+ #define _PyVerify_fd(A) (1) /* dummy */
+ #endif
+diff --git a/Modules/posixmodule.c b/Modules/posixmodule.c
+index 4fc3ef7..462f4a3 100644
+--- a/Modules/posixmodule.c
++++ b/Modules/posixmodule.c
+@@ -529,7 +529,7 @@ _PyInt_FromDev(PY_LONG_LONG v)
+ #endif
+ 
+ 
+-#if defined _MSC_VER && _MSC_VER >= 1400
++#if defined _MSC_VER && _MSC_VER < 1900
+ /* Microsoft CRT in VS2005 and higher will verify that a filehandle is
+  * valid and raise an assertion if it isn't.
+  * Normally, an invalid fd is likely to be a C program error and therefore
+@@ -619,7 +619,7 @@ _PyVerify_fd_dup2(int fd1, int fd2)
+ }
+ #else
+ /* dummy version. _PyVerify_fd() is already defined in fileobject.h */
+-#define _PyVerify_fd_dup2(A, B) (1)
++#define _PyVerify_fd_dup2(fd1, fd2) (_PyVerify_fd(fd1) && (fd2) >= 0)
+ #endif
+ 
+ /* Return a dictionary corresponding to the POSIX environment table */
+diff --git a/Modules/timemodule.c b/Modules/timemodule.c
+index 12c43b0..8692080 100644
+--- a/Modules/timemodule.c
++++ b/Modules/timemodule.c
+@@ -710,7 +710,7 @@ inittimezone(PyObject *m) {
+ #ifdef PYOS_OS2
+     PyModule_AddIntConstant(m, "timezone", _timezone);
+ #else /* !PYOS_OS2 */
+-    PyModule_AddIntConstant(m, "timezone", timezone);
++    PyModule_AddIntConstant(m, "timezone", _timezone);
+ #endif /* PYOS_OS2 */
+ #ifdef HAVE_ALTZONE
+     PyModule_AddIntConstant(m, "altzone", altzone);
+@@ -718,12 +718,12 @@ inittimezone(PyObject *m) {
+ #ifdef PYOS_OS2
+     PyModule_AddIntConstant(m, "altzone", _timezone-3600);
+ #else /* !PYOS_OS2 */
+-    PyModule_AddIntConstant(m, "altzone", timezone-3600);
++    PyModule_AddIntConstant(m, "altzone", _timezone-3600);
+ #endif /* PYOS_OS2 */
+ #endif
+-    PyModule_AddIntConstant(m, "daylight", daylight);
++    PyModule_AddIntConstant(m, "daylight", _daylight);
+     PyModule_AddObject(m, "tzname",
+-                       Py_BuildValue("(zz)", tzname[0], tzname[1]));
++                       Py_BuildValue("(zz)", _tzname[0], _tzname[1]));
+ #else /* !HAVE_TZNAME || __GLIBC__ || __CYGWIN__*/
+ #ifdef HAVE_STRUCT_TM_TM_ZONE
+     {
+-- 
+2.7.0.rc3.207.g0ac5344
+
