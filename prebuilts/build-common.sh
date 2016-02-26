@@ -145,12 +145,20 @@ case "$(uname)" in
 				CMAKE_GENERATOR='Visual Studio 14 2015'
 				VSCOMNTOOLS=$VS140COMNTOOLS
 				;;
+			'')
+				TOOLCHAIN=$(uname -m)-w64-mingw32
+				export CC=$TOOLCHAIN-gcc.exe
+				export CXX=$TOOLCHAIN-g++.exe
+				export LD=$TOOLCHAIN-ld.exe
+				;;
 		esac
 
-		VS_DEV_CMD=${VSCOMNTOOLS}VsDevCmd.bat
-		function devenv() {
-			cmd /c "$VS_DEV_CMD" '&' devenv.com "$@"
-		}
+		if [ "$MSVS" ]; then
+			VS_DEV_CMD=${VSCOMNTOOLS}VsDevCmd.bat
+				function devenv() {
+				cmd /c "$VS_DEV_CMD" '&' devenv.com "$@"
+			}
+		fi
 		;;
 esac
 
