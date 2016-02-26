@@ -14,8 +14,13 @@ set -x
 
 pushd "$BUILD"
 
-PYTHON_DIR=$PREBUILTS/python/$OS-x86
-DEPENDENCIES+=("$PYTHON_DIR")
+# OS X uses system python.
+if [ "$OS" == darwin ]; then
+	PYTHON_DIR=/usr
+else
+	PYTHON_DIR=$PREBUILTS/python/$OS-x86
+	DEPENDENCIES+=("$PYTHON_DIR")
+fi
 
 case "$OS" in
 	windows)
