@@ -1,6 +1,4 @@
 #!/bin/bash
-# latest version of this file can be found at
-# https://android.googlesource.com/platform/external/lldb-utils
 #
 # inputs
 # $PROJECT - project name
@@ -168,8 +166,6 @@ if [ -d "$PATCHES" ]; then
 fi
 
 function finalize_build() {
-
-	URL_PREFIX=https://android.googlesource.com/platform
 
 	for DEPENDENCY in "${DEPENDENCIES[@]}"; do
 		REVISION=$(git -C "$DEPENDENCY" rev-parse HEAD)

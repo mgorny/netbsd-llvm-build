@@ -6,6 +6,7 @@
 
 PROJECT=cmake
 MSVS=2015
+URL_PREFIX=https://android.googlesource.com/platform
 
 SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)
 source "$SCRIPT_DIR/build-common.sh" "$@"
