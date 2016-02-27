@@ -5,7 +5,6 @@
 # $3 = build_number
 
 PROJECT=libedit
-URL_PREFIX=https://android.googlesource.com/platform
 
 SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)
 source "$SCRIPT_DIR/build-common.sh" "$@"

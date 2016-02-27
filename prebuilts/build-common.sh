@@ -170,7 +170,7 @@ function finalize_build() {
 	for DEPENDENCY in "${DEPENDENCIES[@]}"; do
 		REVISION=$(git -C "$DEPENDENCY" rev-parse HEAD)
 		cat >> "$INSTALL/revisions" <<-EOF
-			$URL_PREFIX/${DEPENDENCY#$ROOT_DIR/}/+/$REVISION
+			${DEPENDENCY#$ROOT_DIR/} $REVISION
 		EOF
 	done
 
