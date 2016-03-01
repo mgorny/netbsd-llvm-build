@@ -26,9 +26,10 @@ windows)
 		"%CMAKE%" \
 			-G"$CMAKE_GENERATOR" \
 			-H"%SOURCE%" -B"%BUILD%" \
-			-DCMAKE_INSTALL_PREFIX="%INSTALL%"
+			-DCMAKE_INSTALL_PREFIX=
 		"%CMAKE%" --build "%BUILD%" --target Release
-		"%CMAKE%" --build "%BUILD%" --target install
+		set DESTDIR=%INSTALL%
+		%CMAKE%" --build "%BUILD%" --target install
 	EOF
 	cmd /c "$(cygpath --windows "$BUILD/commands.bat")"
 	;;

@@ -48,7 +48,7 @@ CMAKE_OPTIONS+=(-DPYTHON_EXECUTABLE="$PYTHON_DIR/bin/python")
 CMAKE_OPTIONS+=(-DPYTHON_LIBRARY="$PYTHON_DIR/lib/libpython2.7.so")
 CMAKE_OPTIONS+=(-DPYTHON_INCLUDE_DIR="$PYTHON_DIR/include/python2.7")
 CMAKE_OPTIONS+=(-DLLVM_TARGETS_TO_BUILD="X86;ARM;AArch64;Mips;Hexagon")
-CMAKE_OPTIONS+=(-DCMAKE_INSTALL_PREFIX="$INSTALL/host")
+CMAKE_OPTIONS+=(-DCMAKE_INSTALL_PREFIX=)
 CMAKE_OPTIONS+=(-DLLVM_EXTERNAL_LLDB_SOURCE_DIR="$LLDB")
 CMAKE_OPTIONS+=(-DLLVM_EXTERNAL_CLANG_SOURCE_DIR="$CLANG")
 
@@ -62,7 +62,7 @@ for TARGET in lldb lldb-server finish_swig lib/readline.so; do
 done
 
 # install target builds/installs 5G of stuff we don't need
-#"$CMAKE" --build "$BUILD" --target install
+#DESTDIR="$INSTALL/host" "$CMAKE" --build "$BUILD" --target install
 
 find "$TOOLCHAIN" -name x86_64-linux-gnu -type l -delete
 

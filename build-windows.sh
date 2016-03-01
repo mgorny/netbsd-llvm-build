@@ -41,7 +41,7 @@ CMAKE_OPTIONS+=(-DSWIG_EXECUTABLE="$(cygpath --windows "$SWIG_DIR/bin/swig.exe")
 CMAKE_OPTIONS+=(-DLLDB_RELOCATABLE_PYTHON=1)
 CMAKE_OPTIONS+=(-DPYTHON_HOME="$(cygpath --windows "$PYTHON_DIR/x86")")
 CMAKE_OPTIONS+=(-DLLVM_TARGETS_TO_BUILD="X86;ARM;AArch64;Mips;Hexagon")
-CMAKE_OPTIONS+=(-DCMAKE_INSTALL_PREFIX="$(cygpath --windows "$INSTALL/host")")
+CMAKE_OPTIONS+=(-DCMAKE_INSTALL_PREFIX=)
 CMAKE_OPTIONS+=(-DLLVM_EXTERNAL_LLDB_SOURCE_DIR="$(cygpath --windows "$LLDB")")
 CMAKE_OPTIONS+=(-DLLVM_EXTERNAL_CLANG_SOURCE_DIR="$(cygpath --windows "$CLANG")")
 
@@ -49,11 +49,13 @@ cat > "$TMP/commands.bat" <<-EOF
 	set PATH=C:\\Windows\\System32
 	set CMAKE=$(cygpath --windows "${CMAKE}.exe")
 	set BUILD=$(cygpath --windows "$BUILD")
+	set INSTALL=$(cygpath --windows "$INSTALL/host")
 	call "${VS140COMNTOOLS}VsDevCmd.bat"
 	"%CMAKE%" $(printf '"%s" ' "${CMAKE_OPTIONS[@]}")
 	"%CMAKE%" --build "%BUILD%" --target lldb
 	"%CMAKE%" --build "%BUILD%" --target finish_swig
 	@rem Too large and missing site-packages - http://llvm.org/pr24378
+	@rem set DESTDIR=%INSTALL%
 	@rem "%CMAKE%" --build "%BUILD%" --target install
 EOF
 
