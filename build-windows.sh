@@ -45,17 +45,11 @@ CMAKE_OPTIONS+=(-DCMAKE_INSTALL_PREFIX="$(cygpath --windows "$INSTALL/host")")
 CMAKE_OPTIONS+=(-DLLVM_EXTERNAL_LLDB_SOURCE_DIR="$(cygpath --windows "$LLDB")")
 CMAKE_OPTIONS+=(-DLLVM_EXTERNAL_CLANG_SOURCE_DIR="$(cygpath --windows "$CLANG")")
 
-export
-
 cat > "$TMP/commands.bat" <<-EOF
 	set PATH=C:\\Windows\\System32
 	set CMAKE=$(cygpath --windows "${CMAKE}.exe")
 	set BUILD=$(cygpath --windows "$BUILD")
-	echo Before VsDevCmd.bat
-	set
-	call "${VS140COMNTOOLS}VsDevCmd.bat"
-	echo After VsDevCmd.bat
-	set
+	call "${VS120COMNTOOLS}VsDevCmd.bat"
 	"%CMAKE%" $(printf '"%s" ' "${CMAKE_OPTIONS[@]}")
 	"%CMAKE%" --build "%BUILD%" --target lldb
 	"%CMAKE%" --build "%BUILD%" --target finish_swig
