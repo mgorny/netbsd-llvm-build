@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 set -e
+ulimit -c unlimited
 export originalDir=$(pwd)
 export rootDir=$(pwd)/..
 export buildDir=$rootDir/build
