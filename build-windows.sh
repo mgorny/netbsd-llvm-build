@@ -56,7 +56,7 @@ cat > "$TMP/commands.bat" <<-EOF
 	call "${VS140COMNTOOLS}VsDevCmd.bat"
 	echo After VsDevCmd.bat
 	set
-	"%CMAKE%" $(printf '"%s" ' "${CMAKE_OPTIONS[@]}")
+	"%CMAKE%" --trace $(printf '"%s" ' "${CMAKE_OPTIONS[@]}")
 	"%CMAKE%" --build "%BUILD%" --target lldb
 	"%CMAKE%" --build "%BUILD%" --target finish_swig
 	@rem Too large and missing site-packages - http://llvm.org/pr24378
@@ -66,6 +66,10 @@ EOF
 cat "$TMP/commands.bat"
 cmd /c "$(cygpath --windows "$TMP/commands.bat")"
 rm "$TMP/commands.bat"
+
+pushd "$BUILD"
+zip --filesync --recurse-paths "$DEST/lldb-windows-build-$BNUM.zip" .
+popd
 
 mkdir -p "$INSTALL/host/"{bin,lib,include/lldb,dlls}
 cp -a "$BUILD/bin/"{lldb.exe,liblldb.dll}         "$INSTALL/host/bin/"
