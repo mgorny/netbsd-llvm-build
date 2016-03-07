@@ -45,18 +45,12 @@ CMAKE_OPTIONS+=(-DCMAKE_INSTALL_PREFIX="$(cygpath --windows "$INSTALL/host")")
 CMAKE_OPTIONS+=(-DLLVM_EXTERNAL_LLDB_SOURCE_DIR="$(cygpath --windows "$LLDB")")
 CMAKE_OPTIONS+=(-DLLVM_EXTERNAL_CLANG_SOURCE_DIR="$(cygpath --windows "$CLANG")")
 
-export
-
 cat > "$TMP/commands.bat" <<-EOF
 	set PATH=C:\\Windows\\System32
 	set CMAKE=$(cygpath --windows "${CMAKE}.exe")
 	set BUILD=$(cygpath --windows "$BUILD")
-	echo Before VsDevCmd.bat
-	set
 	call "${VS140COMNTOOLS}VsDevCmd.bat"
-	echo After VsDevCmd.bat
-	set
-	"%CMAKE%" --trace $(printf '"%s" ' "${CMAKE_OPTIONS[@]}")
+	"%CMAKE%" $(printf '"%s" ' "${CMAKE_OPTIONS[@]}")
 	"%CMAKE%" --build "%BUILD%" --target lldb
 	"%CMAKE%" --build "%BUILD%" --target finish_swig
 	@rem Too large and missing site-packages - http://llvm.org/pr24378
@@ -66,10 +60,6 @@ EOF
 cat "$TMP/commands.bat"
 cmd /c "$(cygpath --windows "$TMP/commands.bat")"
 rm "$TMP/commands.bat"
-
-pushd "$BUILD"
-zip --filesync --recurse-paths "$DEST/lldb-windows-build-$BNUM.zip" .
-popd
 
 mkdir -p "$INSTALL/host/"{bin,lib,include/lldb,dlls}
 cp -a "$BUILD/bin/"{lldb.exe,liblldb.dll}         "$INSTALL/host/bin/"
