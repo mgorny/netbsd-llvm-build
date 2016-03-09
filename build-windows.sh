@@ -16,6 +16,9 @@ LLVM=$TMP/llvm
 LLDB=$TMP/lldb
 CLANG=$TMP/clang
 
+ls -la "$TMP/.."
+df -a
+
 function finish() {
 	# make sure nothing's holding these open
 	wait
@@ -49,8 +52,12 @@ cat > "$TMP/commands.bat" <<-EOF
 	set PATH=C:\\Windows\\System32
 	set CMAKE=$(cygpath --windows "${CMAKE}.exe")
 	set BUILD=$(cygpath --windows "$BUILD")
+	echo Before VsDevCmd.bat
+	set
 	call "${VS140COMNTOOLS}VsDevCmd.bat"
-	"%CMAKE%" $(printf '"%s" ' "${CMAKE_OPTIONS[@]}")
+	echo After VsDevCmd.bat
+	set
+	"%CMAKE%" --trace $(printf '"%s" ' "${CMAKE_OPTIONS[@]}")
 	"%CMAKE%" --build "%BUILD%" --target lldb
 	"%CMAKE%" --build "%BUILD%" --target finish_swig
 	@rem Too large and missing site-packages - http://llvm.org/pr24378
@@ -60,6 +67,10 @@ EOF
 cat "$TMP/commands.bat"
 cmd /c "$(cygpath --windows "$TMP/commands.bat")"
 rm "$TMP/commands.bat"
+
+pushd "$BUILD"
+zip --filesync --recurse-paths "$DEST/lldb-windows-build-$BNUM.zip" .
+popd
 
 mkdir -p "$INSTALL/host/"{bin,lib,include/lldb,dlls}
 cp -a "$BUILD/bin/"{lldb.exe,liblldb.dll}         "$INSTALL/host/bin/"
