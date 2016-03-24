@@ -21,3 +21,5 @@ else
   export clangDir=$llvmDir/tools/clang
 fi
 export lockDir=/var/tmp/lldbbuild.exclusivelock
+export TMPDIR=$rootDir/tmp/
+mkdir -p $TMPDIR

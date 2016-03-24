@@ -5,6 +5,13 @@ config=(${1//,/ })
 compiler=${config[1]}
 arch=${config[2]}
 
+function clean {
+  svn status $lldbDir/test --no-ignore | grep '^[I?]' | cut -c 9- | while IFS= read -r f; do echo "$f"; rm -rf "$f"; done || true
+  killall -9 lldb || true
+  killall -9 a.out || true
+}
+trap clean EXIT
+
 if [ $compiler == "totclang" ]
 then
   compiler=$buildDir/bin/clang
@@ -38,4 +45,3 @@ fi
 
 echo $cmd
 eval $cmd
-svn status $lldbDir/test --no-ignore | grep '^[I?]' | cut -c 9- | while IFS= read -r f; do echo "$f"; rm -rf "$f"; done
