@@ -9,7 +9,7 @@ FOR /F "tokens=1,2,3 delims=," %%A IN ("%*") DO (
 SET ndkApiList=21 19 18 17 16 15 14 13 12 9 8 5 4 3
 SET LLDB_TEST_THREADS=8
 
-call taskkill /f /im "adb.exe"
+call taskkill /f /im "adb.exe" || true
 call adb -s %deviceId% shell getprop ro.build.fingerprint
 call adb -s %deviceID% shell ps | grep lldb-server | awk "{print $2}" | xargs adb -s %deviceID% shell kill
 call adb -s %deviceID% shell rm -rf %remoteDir%
