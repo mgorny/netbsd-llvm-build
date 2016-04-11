@@ -32,8 +32,9 @@ XCODEBUILD_OPTIONS+=(DSTROOT=)
 
 xcodebuild "${XCODEBUILD_OPTIONS[@]}"
 
-mkdir -p "$INSTALL/host/include/lldb"
+mkdir -p "$INSTALL/host/"{include/lldb,include/LLDB}
 cp -a "$BUILD/$CONFIG/"{lldb,LLDB.framework}      "$INSTALL/host/"
+cp -a "$LLDB/include/lldb/API/"*                  "$INSTALL/host/include/LLDB/"
 cp -a "$LLDB/include/lldb/"{API,Utility,lldb-*.h} "$INSTALL/host/include/lldb/"
 
 find "$INSTALL/host/include/lldb" -name 'lldb-private*.h' -delete

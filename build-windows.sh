@@ -63,12 +63,13 @@ cat "$TMP/commands.bat"
 cmd /c "$(cygpath --windows "$TMP/commands.bat")"
 rm "$TMP/commands.bat"
 
-mkdir -p "$INSTALL/host/"{bin,lib,include/lldb,dlls}
+mkdir -p "$INSTALL/host/"{bin,lib,include/lldb,include/LLDB,dlls}
 cp -a "$BUILD/bin/"{lldb.exe,liblldb.dll}         "$INSTALL/host/bin/"
 cp -a "$PYTHON_DIR/x86/"{python.exe,python27.dll} "$INSTALL/host/bin/"
 cp -a "$BUILD/lib/"{liblldb.lib,site-packages}    "$INSTALL/host/lib/"
 cp -a "$PYTHON_DIR/x86/Lib/"*                     "$INSTALL/host/lib/"
 cp -a "$PYTHON_DIR/x86/DLLs/"*.pyd                "$INSTALL/host/dlls/"
+cp -a "$LLDB/include/lldb/API/"*                  "$INSTALL/host/include/LLDB/"
 cp -a "$LLDB/include/lldb/"{API,Utility,lldb-*.h} "$INSTALL/host/include/lldb/"
 
 find "$INSTALL/host/include/lldb" -name 'lldb-private*.h' -delete

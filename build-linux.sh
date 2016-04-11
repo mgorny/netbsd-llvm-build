@@ -66,7 +66,7 @@ done
 
 find "$TOOLCHAIN" -name x86_64-linux-gnu -type l -delete
 
-mkdir -p "$INSTALL/host/"{bin,lib,include/lldb}
+mkdir -p "$INSTALL/host/"{bin,lib,include/lldb,include/LLDB}
 cp -a "$BUILD/bin/"lldb*                             "$INSTALL/host/bin/"
 cp -a "$PYTHON_DIR/bin/"python*                      "$INSTALL/host/bin/"
 cp -a "$BUILD/lib/"{liblldb.so*,readline.so}         "$INSTALL/host/lib/"
@@ -74,6 +74,7 @@ cp -a "$PREBUILTS/libedit/linux-x86/lib/"libedit.so* "$INSTALL/host/lib/"
 cp -a "$TOOLCHAIN/sysroot/usr/lib/"libtinfo.so*      "$INSTALL/host/lib/"
 cp -a "$PYTHON_DIR/lib/"{libpython2.7.so*,python2.7} "$INSTALL/host/lib/"
 cp -a "$BUILD/lib/python2.7/site-packages"           "$INSTALL/host/lib/python2.7"
+cp -a "$LLDB/include/lldb/API/"*                     "$INSTALL/host/include/LLDB/"
 cp -a "$LLDB/include/lldb/"{API,Utility,lldb-*.h}    "$INSTALL/host/include/lldb/"
 
 find "$INSTALL/host/include/lldb" -name 'lldb-private*.h' -delete
