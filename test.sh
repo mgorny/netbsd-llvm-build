@@ -8,4 +8,5 @@ export PYTHONHOME=$INSTALL
 
 "$LLDB_UTILS/../../prebuilts/python/linux-x86/bin/python" \
 	"$LLDB_UTILS/../lldb/test/dotest.py" \
-	--executable "$INSTALL/bin/lldb"
+	--executable "$INSTALL/bin/lldb" \
+	"$@"
