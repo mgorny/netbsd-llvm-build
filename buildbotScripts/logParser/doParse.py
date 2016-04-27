@@ -25,9 +25,9 @@ def get_args():
   parser.add_argument('-c', '--count', type=int, dest='count', action='store',
                       help='display the last N results')
   args = parser.parse_args()
-  if((args.f is None or args.t is None) and args.count is None):
+  if (args.f is None or args.t is None) and args.count is None:
     parser.error("-c or -f & -t is required")
-  if(args.f is not None and (args.t is not None or args.count is not None)):
+  if (args.f is not None or args.t is not None) and args.count is not None:
     parser.error("either -c or -f & -t is permitted, not both")
   return args
 
@@ -42,18 +42,18 @@ configDict = {"darwin":2,
               "android":3,
               "windows":1}
 logSourceDir = ""
-gsutil = '/usr/bin/gsutil'
+gsutil = '/usr/local/bin/gsutil'
 # whether include test method in the result or not,
 # if True: TestMiExec.MiExecTestCase.test_lldbmi_exec_step (90.717949%)
 # if False: TestMiExec (98.717949%), set to True for now,
 # because False will produce inaccurate percentage count, need to make sure each testSuite only counted once for each build
 printTestMethod = True
 if printTestMethod:
-  fileNameRE = re.compile(r'^(.*)-(.*\..*\..*)-(.*)-(.*)\.log')
-  timeoutNameRE = re.compile(r'^(.*\..*\..*)-(.*)-(.*)\.log')
+  fileNameRE = re.compile(r'^([^-]*)-([^-]*\.[^-]*\.[^-]*)-([^-]*)-(.*)\.log')
+  timeoutNameRE = re.compile(r'^([^-]*\.[^-]*\.[^-]*)-([^-]*)-(.*)\.log')
 else:
-  fileNameRE = re.compile(r'^(.*)-(.*)\..*\..*-(.*)-(.*)\.log')
-  timeoutNameRE = re.compile(r'^(.*)\..*\..*-(.*)-(.*)\.log')
+  fileNameRE = re.compile(r'^([^-]*)-([^-]*)\.[^-]*\.[^-]*-([^-]*)-(.*)\.log')
+  timeoutNameRE = re.compile(r'^([^-]*)\.[^-]*\.[^-]*-([^-]*)-(.*)\.log')
 totalParsed = 0
 
 skipList = set()
@@ -65,12 +65,14 @@ skipDict = defaultdict(list)
 upassDict = defaultdict(list)
 xfailDict = defaultdict(list)
 failDict = defaultdict(list)
+errorDict = defaultdict(list)
 
 def getServerFileList():
   filelist = subprocess.check_output([gsutil, 'ls', logSourceDir]).splitlines()
   return filelist
 
 def downloadAndParseLastNFiles(filelist, count):
+  filelist.sort(key = lambda f: int(getBuild(f)))
   lastN = min(count, len(filelist))
   for file in filelist[-lastN:]:
     buildNum = getBuild(file)
@@ -110,11 +112,6 @@ def parseZip(zipName):
       m = fileNameRE.match(name)
       if m:
         code, test, arch, compiler = m.groups()
-        # totclang, the RE format does't apply
-        if compiler.find('_')>-1:
-          compiler = 'totclang'
-          arch = test.split('-')[1]
-          test = test.split('-')[0]
         info = resultInfo(build, arch, compiler)
         #print code, test, arch, compiler
         if code == 'ExpectedFailure':
@@ -128,6 +125,8 @@ def parseZip(zipName):
           upassDict[test].append(info)
         elif code == 'Failure':
           failDict[test].append(info)
+        elif code == 'Error':
+          errorDict[test].append(info)
       else:
         m = timeoutNameRE.match(name)
         if m:
@@ -137,7 +136,7 @@ def parseZip(zipName):
           hangDict[test].append(info)
 
 # TODO: verbose level
-# disable verbose for xfail, xpass and skip
+# disable verbose for xpass and skip
 def addResult(dict, build, test, arch, compiler):
   return
 def printDict(dict, verbose):
@@ -157,13 +156,16 @@ def printResult(v):
   printDict(upassDict, None)
 
   print "\nExpectedFailure:"
-  printDict(xfailDict, None)
+  printDict(xfailDict, v)
 
   print "\nSkippedTest:"
   printDict(skipDict, None)
 
   print "\nFailure:"
   printDict(failDict, v)
+
+  print "\nError:"
+  printDict(errorDict, v)
 
 def main():
   global logDestDir, logSourceDir, totalParsed
@@ -174,7 +176,6 @@ def main():
   logSourceDir = logSourceDirDict[args.builder]
   if not os.path.exists(logDestDir):
     os.makedirs(logDestDir)
-  getServerFileList()
   if(args.count is not None):
     print "Download and parse test traces of last", args.count, "build from", args.builder, "builder"
     downloadAndParseLastNFiles(getServerFileList(), args.count)
