@@ -45,15 +45,6 @@ screen -d -m adb -s $deviceId shell TMPDIR=$remoteDir/tmp $remoteDir/lldb-server
 
 export LLDB_TEST_THREADS=8
 
-host=$(uname)
-echo "uname: " $host
-if [ $host == Darwin ]
-then
- lldbPath=$lldbDir/build/Release/lldb
-else
- lldbPath=$buildDir/bin/lldb
-fi
-
 apilevel=$(adb -s $deviceId shell getprop ro.build.version.sdk)
 apilevel=${apilevel//[[:space:]]/}
 
@@ -80,15 +71,13 @@ else
   ndkdir=$arch-$ndkapi
 fi
 
-cmd="$lldbDir/test/dotest.py \
---executable $lldbPath \
--A $target -C $toolchain/$ndkdir/bin/$compiler \
--v -s logs-$compiler-$arch-$deviceId -u CXXFLAGS -u CFLAGS \
---channel \"gdb-remote packets\" --channel \"lldb all\" \
---platform-name remote-android \
---platform-url $connect_url \
---platform-working-dir $remoteDir \
---env OS=Android \
---skip-category lldb-mi"
-
-eval $cmd
+"$lldbDir/test/dotest.py" \
+  --executable "$buildDir/bin/lldb" \
+  -A "$target" -C "$toolchain/$ndkdir/bin/$compiler" \
+  -v -s "logs-$compiler-$arch-$deviceId" -u CXXFLAGS -u CFLAGS \
+  --channel "gdb-remote packets" --channel "lldb all" \
+  --platform-name remote-android \
+  --platform-url "$connect_url" \
+  --platform-working-dir "$remoteDir" \
+  --env OS=Android \
+  --skip-category lldb-mi
