@@ -5,16 +5,16 @@
 # $3 = build_number
 
 case "$(uname)" in
-	Linux|Darwin)	SCRIPT=posix;;
-	CYGWIN_NT-*)	SCRIPT=windows;;
-	*)		echo "Unknown OS" >&2; exit 1;;
+	Linux)  OS=linux;;
+	Darwin) OS=darwin;;
+	CYGWIN_NT-*) OS=windows;;
 esac
 
 LLDB_UTILS="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
 
-source "$LLDB_UTILS/build-$SCRIPT.sh" "$@"
+source "$LLDB_UTILS/build-$OS.sh" "$@"
 
-if [ "$(uname)" == Linux ]; then
+if [ $OS == linux ]; then
 	source "$LLDB_UTILS/build-android.sh" "$@"
 
 	pushd "$LLDB"
