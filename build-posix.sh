@@ -53,8 +53,8 @@ if [ "$OS" == linux ]; then
 
 	CMAKE_TARGETS+=(lib/readline.so)
 else
-	CC=clang
-        EXEC_PREFIX=
+	CC=`xcrun --verbose -sdk macosx10.11 -find clang`
+	EXEC_PREFIX=
 fi
 
 CMAKE_OPTIONS+=(-GNinja)
