@@ -6,6 +6,7 @@ source setEnv.sh
 buildType=Release
 mkdir -p "$buildDir"
 cd "$buildDir"
+host=$(uname)
 if [[ "$host" == NetBSD ]]; then
   if [ -f /usr/include/panel.h ]; then
     cmake -GNinja -DCMAKE_BUILD_TYPE="$buildType" "$llvmDir" -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ -DLLDB_DISABLE_CURSES:BOOL=FALSE
