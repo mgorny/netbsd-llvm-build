@@ -9,7 +9,7 @@ then
 else
   triple=$1
 fi
-  cmake -GNinja -DCMAKE_BUILD_TYPE=Release $llvmDir \
+  cmake -GNinja -DCMAKE_BUILD_TYPE=MinSizeRel $llvmDir \
 -DCMAKE_TOOLCHAIN_FILE=$lldbDir/cmake/platforms/Android.cmake \
 -DANDROID_TOOLCHAIN_DIR=$toolchain/$1-21 \
 -DANDROID_ABI=$2 \
