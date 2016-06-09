@@ -49,11 +49,11 @@ gsutil = '/usr/local/bin/gsutil'
 # because False will produce inaccurate percentage count, need to make sure each testSuite only counted once for each build
 printTestMethod = True
 if printTestMethod:
-  fileNameRE = re.compile(r'^([^-]*)-([^-]*\.[^-]*\.[^-]*)-([^-]*)-(.*)\.log')
-  timeoutNameRE = re.compile(r'^([^-]*\.[^-]*\.[^-]*)-([^-]*)-(.*)\.log')
+  fileNameRE = re.compile(r'^([^-]*)-(Test[^-]*-[^-]*-[^-]*)-([^-]*)-(.*)\.log')
+  timeoutNameRE = re.compile(r'^(Test[^-]*-[^-]*-[^-]*)-([^-]*)-(.*)\.log')
 else:
-  fileNameRE = re.compile(r'^([^-]*)-([^-]*)\.[^-]*\.[^-]*-([^-]*)-(.*)\.log')
-  timeoutNameRE = re.compile(r'^([^-]*)\.[^-]*\.[^-]*-([^-]*)-(.*)\.log')
+  fileNameRE = re.compile(r'^([^-]*)-(Test[^-]*)-[^-]*-[^-]*-([^-]*)-(.*)\.log')
+  timeoutNameRE = re.compile(r'^(Test[^-]*)-[^-]*-[^-]*-([^-]*)-(.*)\.log')
 totalParsed = 0
 
 skipList = set()
