@@ -55,7 +55,10 @@ if [ "$OS" == linux ]; then
 
 	CMAKE_TARGETS+=(lib/readline.so)
 else
-	CC=$PREBUILTS/clang/darwin-x86/sdk/3.5/bin/clang
+	# Allow the user to override the compiler used. Unfortunately, the prebuilt clang does
+	# not work correctly on the user machines. This makes it impossible to reproduce the
+	# buildbot builds exactly, but this will at least enable us to use the same script.
+	CC=${LLDB_OVERRIDE_CC:-"$PREBUILTS/clang/darwin-x86/sdk/3.5/bin/clang"}
 	EXEC_PREFIX=
 
         CMAKE_OPTIONS+=(-DLLDB_CODESIGN_IDENTITY="")
