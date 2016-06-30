@@ -10,4 +10,5 @@ SET remoteDir=/data/local/tmp/lldb
 SET toolchain=C:/Toolchains_r11c
 SET port=5430
 SET lockDir=c:\tmp\lock\lldbbuild.exclusivelock
+SET PATH=%PATH%;%pythonHome%
 call "%VS140COMNTOOLS%\VsDevCmd.bat"
