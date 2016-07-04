@@ -41,7 +41,12 @@ else
   listen_url=127.0.0.1:$port
   connect_url=connect://$deviceId:$port
 fi
-screen -d -m adb -s $deviceId shell TMPDIR=$remoteDir/tmp $remoteDir/lldb-server platform --listen $listen_url --server
+screen -d -m adb -s "$deviceId" shell \
+    env \
+    TMPDIR="$remoteDir/tmp" \
+    LLDB_DEBUGSERVER_LOG_FILE=server.log \
+    LLDB_SERVER_LOG_CHANNELS="gdb-remote packets:lldb all" \
+    "$remoteDir/lldb-server" platform --listen $listen_url --server
 
 export LLDB_TEST_THREADS=8
 
