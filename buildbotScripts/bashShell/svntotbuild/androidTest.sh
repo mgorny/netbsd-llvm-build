@@ -41,7 +41,7 @@ else
   listen_url=127.0.0.1:$port
   connect_url=connect://$deviceId:$port
 fi
-adb -s "$deviceId" shell <<-EOF &
+adb -s "$deviceId" shell <<-EOF >/dev/null &
     export TMPDIR="$remoteDir/tmp"
     export LLDB_DEBUGSERVER_LOG_FILE=server.log
     export LLDB_SERVER_LOG_CHANNELS="gdb-remote packets:lldb all"
