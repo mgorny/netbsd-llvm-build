@@ -16,13 +16,16 @@ rm rev-$rev.zip
     printf '"revision": %d }\n' "$rev"
 } >"rev-$rev.bq"
 
-if ! bq insert android-devtools-lldb-build:LLDB_buildbots.build_stats <"rev-$rev.bq"; then
-    # This seems to occasionally fail with the error:
+SLEEP=1
+for((i=0;i<5;++i)); do
+    bq insert android-devtools-lldb-build:LLDB_buildbots.build_stats <"rev-$rev.bq" && break
+
+    # The above command seems to occasionally fail with the error:
     # BigQuery error in insert operation: Error encountered during execution. Retrying
     # may solve the problem.
     # So, let's retry...
-    sleep 5
-    bq insert android-devtools-lldb-build:LLDB_buildbots.build_stats <"rev-$rev.bq"
-fi
+    sleep $SLEEP
+    SLEEP=$((2*SLEEP))
+done
 
 rm "rev-$rev.bq"
