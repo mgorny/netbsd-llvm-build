@@ -3,6 +3,8 @@ set -e
 source setEnv.sh
 source cleanUp.sh
 
+maybeCleanUp
+
 export llvmsvn=http://llvm.org/svn/llvm-project/llvm/trunk
 export clangsvn=http://llvm.org/svn/llvm-project/cfe/trunk
 export lldbsvn=http://llvm.org/svn/llvm-project/lldb/trunk

@@ -3,6 +3,10 @@ set -e
 set -x
 
 source setEnv.sh
+source cleanUp.sh
+
+markBuildIncomplete
+
 buildType=Release
 mkdir -p "$buildDir"
 cd "$buildDir"

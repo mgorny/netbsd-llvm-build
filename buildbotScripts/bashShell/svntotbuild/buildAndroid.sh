@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 set -e
 source setEnv.sh
+source cleanUp.sh
 
 function androidMake {
 if [[ $1 == mips* ]]
@@ -31,10 +32,11 @@ function cmakenbuild {
   build
 }
 set -x
+markBuildIncomplete
 cmakenbuild i386 x86
 cmakenbuild x86_64 x86_64
 cmakenbuild arm armeabi
 cmakenbuild aarch64 aarch64
 cmakenbuild mips mips
 cmakenbuild mips64 mips64
-
+markBuildComplete
