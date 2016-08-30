@@ -1,4 +1,8 @@
 #!/usr/bin/env bash
+
+# Do not generate any output from this file. It is sourced from files (getRevision.sh) that need
+# a clean output stream.
+
 set -e
 ulimit -c unlimited
 export originalDir=$(pwd)
@@ -12,7 +16,6 @@ if [ ! -d "/lldb-buildbot" ]; then #check whether the build server has lldb-buil
 else
   dataRoot="/lldb-buildbot"
 fi
-echo "DATAROOT"$dataRoot
 
 export toolchain=$dataRoot/Toolchains_latest
 export sdkDir=$dataRoot/Sdk
