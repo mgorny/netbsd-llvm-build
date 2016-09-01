@@ -1,4 +1,7 @@
 @echo off
+
+exit /b 0
+
 setlocal enabledelayedexpansion
 call setEnv.bat || goto :error
 
