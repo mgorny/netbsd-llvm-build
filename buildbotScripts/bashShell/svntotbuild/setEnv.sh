@@ -18,7 +18,7 @@ else
 fi
 
 export toolchain=$dataRoot/Toolchains_latest
-export ANDROID_NDK_HOME=$dataRoot/android-ndk
+export sdkDir=$dataRoot/Sdk
 
 export port=5430
 export gstrace=gs://lldb_test_traces
