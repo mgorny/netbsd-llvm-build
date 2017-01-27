@@ -3,8 +3,8 @@ set -e -x
 source setEnv.sh
 
 rev=$(svnversion $llvmDir)
-cd $rootDir
-zip -r rev-$rev build/android-*/bin
+cd "$buildDir/install"
+zip -r rev-$rev android-*/bin
 gsutil cp rev-$rev.zip $gsbinaries/
 rm rev-$rev.zip
 
