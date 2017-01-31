@@ -10,7 +10,7 @@ function cmakenbuild {
   mkdir -p $dir && cd $dir
   cmake -C "$originalDir/lldb-utils/config/android-$1.cmake" "$llvmDir"
   nice ninja lldb-server
-  DESTDIR=$buildDir/install/android-$i \
+  DESTDIR=$buildDir/install/android-$1 \
     cmake -DCMAKE_INSTALL_COMPONENT=lldb-server -DCMAKE_INSTALL_DO_STRIP=ON -P cmake_install.cmake
 }
 
