@@ -19,8 +19,6 @@ gsutil mv LATEST $gsbinaries/
     printf '"revision": %d }\n' "$rev"
 } >"rev-$rev.bq"
 
-rm -rf "$buildDir/install"
-
 SLEEP=1
 for((i=0;i<5;++i)); do
     bq insert android-devtools-lldb-build:LLDB_buildbots.build_stats <"rev-$rev.bq" && break
@@ -33,4 +31,4 @@ for((i=0;i<5;++i)); do
     SLEEP=$((2*SLEEP))
 done
 
-rm "rev-$rev.bq"
+rm -rf "$buildDir/install" "rev-$rev.bq"
