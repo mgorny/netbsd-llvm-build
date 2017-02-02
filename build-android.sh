@@ -10,16 +10,16 @@ if [ "$(uname)" != Linux ]; then
 	exit 1
 fi
 
-if ! [ -d "$ANDROID_NDK_HOME" ]; then
-	# We don't have a working NDK in AOSP atm.
-	echo "Please set ANDROID_NDK_HOME environment variable." >&2
-	exit 1;
-fi
-
 if [ ! "$BUILD" ]; then
 	OS=linux
 	LLDB_UTILS=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)
         source "$LLDB_UTILS/build-common.sh" "$@"
+fi
+
+if ! [ -d "$ANDROID_NDK_HOME" ]; then
+	# We don't have a working NDK in AOSP atm.
+	echo "Please set ANDROID_NDK_HOME environment variable." >&2
+	exit 1;
 fi
 
 for ARCH in x86 x86_64 armeabi arm64-v8a; do
