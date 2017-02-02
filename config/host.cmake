@@ -1,0 +1,22 @@
+set(REPO_ROOT ${CMAKE_CURRENT_LIST_DIR}/../../..)
+set(PREBUILTS ${REPO_ROOT}/prebuilts)
+
+# Configure cmake
+set(CMAKE_GENERATOR Ninja CACHE STRING "CMake generator")
+set(CMAKE_MAKE_PROGRAM "${PREBUILTS}/ninja/${OS}-x86/ninja" CACHE STRING "Ninja program")
+set(CMAKE_BUILD_TYPE Release CACHE STRING "Release, MinSizeRel, RelWithDebInfo, Debug")
+set(CMAKE_INSTALL_PREFIX "" CACHE STRING "Installation prefix")
+set(CMAKE_TOOLCHAIN_FILE "${CMAKE_CURRENT_LIST_DIR}/${OS}.toolchain.cmake"
+  CACHE STRING "Toolchain file")
+
+# Configure LLVM
+set(LLVM_TARGETS_TO_BUILD "X86;ARM;AArch64;Mips" CACHE STRING "X86, ARM, AArch64, Mips")
+set(LLVM_EXTERNAL_CLANG_SOURCE_DIR "${REPO_ROOT}/external/clang"
+  CACHE STRING "Clang source path")
+set(LLVM_EXTERNAL_LLDB_SOURCE_DIR "${REPO_ROOT}/external/lldb"
+  CACHE STRING "LLDB source path")
+
+set(LLDB_DISABLE_CURSES ON CACHE BOOL "Disable curses support")
+
+set(SWIG_EXECUTABLE "${PREBUILTS}/swig/${OS}-x86/bin/swig"
+  CACHE STRING "Swig executable")

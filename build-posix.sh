@@ -21,27 +21,15 @@ unset CMAKE_OPTIONS
 unset CMAKE_TARGETS
 
 CMAKE_TARGETS+=(lldb)
-if [ "$OS" == linux ]; then
-	CMAKE_OPTIONS+=(-C"$LLDB_UTILS/config/linux.cmake")
-else
+CMAKE_OPTIONS+=(-C"$LLDB_UTILS/config/$OS.cmake")
+if [ "$OS" == darwin ]; then
 	# Allow the user to override the compiler used. Unfortunately, the prebuilt clang does
 	# not work correctly on the user machines. This makes it impossible to reproduce the
 	# buildbot builds exactly, but this will at least enable us to use the same script.
-	CC=${LLDB_OVERRIDE_CC:-"$PREBUILTS/clang/darwin-x86/sdk/3.5/bin/clang"}
-
-        CMAKE_OPTIONS+=(-DLLDB_CODESIGN_IDENTITY="")
-	CMAKE_OPTIONS+=(-DCMAKE_C_COMPILER="$CC")
-	CMAKE_OPTIONS+=(-DCMAKE_CXX_COMPILER="$CC++")
-	CMAKE_OPTIONS+=(-GNinja)
-	CMAKE_OPTIONS+=(-DCMAKE_MAKE_PROGRAM="$NINJA")
-	CMAKE_OPTIONS+=(-DCMAKE_BUILD_TYPE=$CONFIG)
-	CMAKE_OPTIONS+=(-DLLDB_DISABLE_CURSES=1)
-	CMAKE_OPTIONS+=(-DSWIG_EXECUTABLE="$SWIG_DIR/bin/swig")
-	CMAKE_OPTIONS+=(-DLLVM_TARGETS_TO_BUILD="X86;ARM;AArch64;Mips;Hexagon")
-	CMAKE_OPTIONS+=(-DCMAKE_INSTALL_PREFIX=)
-	CMAKE_OPTIONS+=(-DLLVM_EXTERNAL_LLDB_SOURCE_DIR="$LLDB")
-	CMAKE_OPTIONS+=(-DLLVM_EXTERNAL_CLANG_SOURCE_DIR="$CLANG")
-	CMAKE_OPTIONS+=(-DCMAKE_AR="ar")
+	if [ -z "$LLDB_USE_SYSTEM_CC" ]; then
+		CMAKE_OPTIONS+=(-DCMAKE_C_COMPILER="$PREBUILTS/clang/darwin-x86/sdk/3.5/bin/clang")
+		CMAKE_OPTIONS+=(-DCMAKE_CXX_COMPILER="$PREBUILTS/clang/darwin-x86/sdk/3.5/bin/clang++")
+	fi
 fi
 
 CMAKE_OPTIONS+=(-H"$LLVM")
