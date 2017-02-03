@@ -9,23 +9,6 @@ OS=windows
 LLDB_UTILS=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)
 source "$LLDB_UTILS/build-common.sh" "$@"
 
-# path too long
-TMP=$(mktemp --directory)
-mv "$LLVM" "$LLDB" "$CLANG" "$TMP/"
-LLVM=$TMP/llvm
-LLDB=$TMP/lldb
-CLANG=$TMP/clang
-
-function finish() {
-	# make sure nothing's holding these open
-	wait
-	# move these back; ignoring failures
-	mv "$LLVM" "$LLDB" "$CLANG" "$ROOT_DIR/external/" || true
-	rm -rf "$TMP"
-}
-
-trap finish EXIT
-
 export SWIG_LIB=$(cygpath --windows "$SWIG_LIB")
 
 CONFIG=Release
@@ -45,7 +28,7 @@ CMAKE_OPTIONS+=(-DCMAKE_INSTALL_PREFIX=)
 CMAKE_OPTIONS+=(-DLLVM_EXTERNAL_LLDB_SOURCE_DIR="$(cygpath --windows "$LLDB")")
 CMAKE_OPTIONS+=(-DLLVM_EXTERNAL_CLANG_SOURCE_DIR="$(cygpath --windows "$CLANG")")
 
-cat > "$TMP/commands.bat" <<-EOF
+cat > "$OUT/commands.bat" <<-EOF
 	set PATH=C:\\Windows\\System32
 	set CMAKE=$(cygpath --windows "${CMAKE}.exe")
 	set BUILD=$(cygpath --windows "$BUILD")
@@ -59,9 +42,9 @@ cat > "$TMP/commands.bat" <<-EOF
 	@rem "%CMAKE%" --build "%BUILD%" --target install
 EOF
 
-cat "$TMP/commands.bat"
-cmd /c "$(cygpath --windows "$TMP/commands.bat")"
-rm "$TMP/commands.bat"
+cat "$OUT/commands.bat"
+cmd /c "$(cygpath --windows "$OUT/commands.bat")"
+rm "$OUT/commands.bat"
 
 mkdir -p "$INSTALL/host/"{bin,lib,include/lldb,include/LLDB,dlls}
 cp -a "$BUILD/bin/"{lldb.exe,liblldb.dll}         "$INSTALL/host/bin/"
