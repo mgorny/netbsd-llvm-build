@@ -16,11 +16,7 @@ if [ ! "$BUILD" ]; then
         source "$LLDB_UTILS/build-common.sh" "$@"
 fi
 
-if ! [ -d "$ANDROID_NDK_HOME" ]; then
-	# We don't have a working NDK in AOSP atm.
-	echo "Please set ANDROID_NDK_HOME environment variable." >&2
-	exit 1;
-fi
+export ANDROID_NDK_HOME=$PREBUILTS/ndk
 
 for ARCH in x86 x86_64 armeabi arm64-v8a; do
 
