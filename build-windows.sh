@@ -11,22 +11,10 @@ source "$LLDB_UTILS/build-common.sh" "$@"
 
 export SWIG_LIB=$(cygpath --windows "$SWIG_LIB")
 
-CONFIG=Release
-
 unset CMAKE_OPTIONS
-CMAKE_OPTIONS+=(-GNinja)
+CMAKE_OPTIONS+=(-C"$(cygpath --windows "$LLDB_UTILS/config/$OS.cmake")")
 CMAKE_OPTIONS+=(-H"$(cygpath --windows "$LLVM")")
 CMAKE_OPTIONS+=(-B"$(cygpath --windows "$BUILD")")
-CMAKE_OPTIONS+=(-DCMAKE_MAKE_PROGRAM="$(cygpath --windows "$NINJA.exe")")
-CMAKE_OPTIONS+=(-DCMAKE_BUILD_TYPE="$CONFIG")
-CMAKE_OPTIONS+=(-DSWIG_DIR="$(cygpath --windows "$SWIG_DIR")")
-CMAKE_OPTIONS+=(-DSWIG_EXECUTABLE="$(cygpath --windows "$SWIG_DIR/bin/swig.exe")")
-CMAKE_OPTIONS+=(-DLLDB_RELOCATABLE_PYTHON=1)
-CMAKE_OPTIONS+=(-DPYTHON_HOME="$(cygpath --windows "$PYTHON_DIR/x86")")
-CMAKE_OPTIONS+=(-DLLVM_TARGETS_TO_BUILD="X86;ARM;AArch64;Mips;Hexagon")
-CMAKE_OPTIONS+=(-DCMAKE_INSTALL_PREFIX=)
-CMAKE_OPTIONS+=(-DLLVM_EXTERNAL_LLDB_SOURCE_DIR="$(cygpath --windows "$LLDB")")
-CMAKE_OPTIONS+=(-DLLVM_EXTERNAL_CLANG_SOURCE_DIR="$(cygpath --windows "$CLANG")")
 
 cat > "$OUT/commands.bat" <<-EOF
 	set PATH=C:\\Windows\\System32

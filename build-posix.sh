@@ -15,8 +15,6 @@ source "$LLDB_UTILS/build-common.sh" "$@"
 
 export PATH=/usr/bin:/bin
 
-CONFIG=Release
-
 unset CMAKE_OPTIONS
 unset CMAKE_TARGETS
 
