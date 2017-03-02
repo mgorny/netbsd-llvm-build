@@ -1,12 +1,9 @@
-@echo off
-
 SET testexitcode=0
 FOR /F "tokens=1,2,3 delims=," %%A IN ("%*") DO (
     SET deviceId=%%A
     SET compiler=%%B
     SET arch=%%C
 )
-SET ndkApiList=21 19 18 17 16 15 14 13 12 9 8 5 4 3
 SET LLDB_TEST_THREADS=8
 
 call taskkill /f /im "adb.exe" || true
@@ -19,14 +16,16 @@ call adb -s %deviceId% shell chmod 755 %remoteDir%/lldb-server || goto :error
 call adb forward --remove-all
 call C:\Cygwin64\bin\screen -d -m adb -s %deviceId% shell TMPDIR=%remoteDir%/tmp %remoteDir%/lldb-server platform --listen 127.0.0.1:%port% --server || goto :error
 
-REM Get sdklevel, then find the matching availabe ndk api level
-for /f "delims=" %%a in ('adb -s %deviceId% shell getprop ro.build.version.sdk') do @set sdkLevel=%%a
-call :getNdkApi %sdkLevel%
-SET ndkapi=%errorlevel%
+if "clang"=="%compiler:~-5%" (
+    SET toolchain=llvm
+    SET compiler=clang
+) else (
+    SET toolchain=%compiler:~0,-4%-4.9
+)
 
 call %pythonHome%\python.exe %lldbDir%\test\dotest.py ^
 --executable %buildDir%\bin\lldb.exe ^
--A %arch% -C %toolchain%/%arch%-%ndkapi%/bin/%compiler%.exe ^
+-A %arch% -C %ANDROID_NDK_HOME%/toolchains/%toolchain%/prebuilt/windows/x86_64//bin/%compiler%.exe ^
 -v -s c:\logs\logs-gcc-%arch% -u CXXFLAGS -u CFLAGS ^
 --platform-name remote-android ^
 --platform-url adb://%deviceId%:%port% ^
@@ -48,10 +47,3 @@ if %testexitcode% NEQ 0 (
     exit /b %testexitcode%
 )
 exit /b %errorlevel%
-
-:getNdkApi
-for %%a in (%ndkApiList%) do (
-  if %%a LEQ %~1 (
-    exit /b %%a
-)
-)

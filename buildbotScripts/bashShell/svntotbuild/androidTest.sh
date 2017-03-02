@@ -12,18 +12,6 @@ function clean {
 }
 trap clean EXIT
 
-ndkApiList=(21 19 18 17 16 15 14 13 12 9 8 5 4 3)
-function getNdkApi {
-  local e
-  for e in "${ndkApiList[@]}"; do
-    if [[ "$e" -le "$1" ]]
-    then
-      echo $e
-      return
-    fi
-  done
-}
-
 set -x
 adb -s $deviceId shell getprop ro.build.fingerprint
 adb -s $deviceId shell ps | grep lldb-server | awk '{print $2}' | xargs adb -s $deviceId shell kill || true
@@ -41,7 +29,7 @@ else
   listen_url=127.0.0.1:$port
   connect_url=connect://$deviceId:$port
 fi
-adb -s "$deviceId" shell <<-EOF >/dev/null &
+adb -s "$deviceId" shell <<-EOF &>/dev/null &
     export TMPDIR="$remoteDir/tmp"
     export LLDB_DEBUGSERVER_LOG_FILE=server.log
     export LLDB_SERVER_LOG_CHANNELS="gdb-remote packets:lldb all"
@@ -50,35 +38,18 @@ EOF
 
 export LLDB_TEST_THREADS=8
 
-apilevel=$(adb -s $deviceId shell getprop ro.build.version.sdk)
-apilevel=${apilevel//[[:space:]]/}
-
-ndkapi=$(getNdkApi $apilevel)
-
-if [[ $arch == mips ]]
-then
-  target=ips32r2
-elif [[ $arch == mips64 ]]
-then
-  target=ips64r2
+if [[ $compiler == *-clang ]]; then
+  toolchain=llvm
+  compiler=clang
 else
-  target=$arch
+  toolchain=${compiler//-gcc}-4.9
 fi
 
-if [[ $compiler == *-clang* ]]
-then
-  if [ $apilevel == 23 ]
-  then
-    ndkapi=23
-  fi
-  ndkdir=$arch-$ndkapi-clang
-else
-  ndkdir=$arch-$ndkapi
-fi
+host=$(uname -s | tr '[:upper:]' '[:lower:]')
 
 "$lldbDir/test/dotest.py" \
   --executable "$buildDir/bin/lldb" \
-  -A "$target" -C "$toolchain/$ndkdir/bin/$compiler" \
+  -A "$arch" -C "$ANDROID_NDK_HOME/toolchains/$toolchain/prebuilt/$host-x86_64/bin/$compiler" \
   -v -s "logs-$compiler-$arch-$deviceId" -u CXXFLAGS -u CFLAGS \
   --channel "gdb-remote packets" --channel "lldb all" \
   --platform-name remote-android \

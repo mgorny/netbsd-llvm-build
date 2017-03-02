@@ -17,9 +17,7 @@ else
   dataRoot="/lldb-buildbot"
 fi
 
-export toolchain=$dataRoot/Toolchains_latest
-export ANDROID_NDK_HOME=$dataRoot/android-ndk
-
+export ANDROID_NDK_HOME=$dataRoot/android-ndk-r13b
 export port=5430
 export gstrace=gs://lldb_test_traces
 export gsbinaries=gs://lldb_binaries
