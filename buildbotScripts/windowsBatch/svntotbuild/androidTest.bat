@@ -20,12 +20,18 @@ if "clang"=="%compiler:~-5%" (
     SET toolchain=llvm
     SET compiler=clang
 ) else (
-    SET toolchain=%compiler:~0,-4%-4.9
+    if "i686-"=="%compiler:~0,5%" (
+        SET toolchain=x86-4.9
+    ) else if "x86_64-"=="%compiler:~0,7%" (
+        SET toolchain=x86_64-4.9
+    ) else (
+        SET toolchain=%compiler:~0,-4%-4.9
+    )
 )
 
 call %pythonHome%\python.exe %lldbDir%\test\dotest.py ^
 --executable %buildDir%\bin\lldb.exe ^
--A %arch% -C %ANDROID_NDK_HOME%/toolchains/%toolchain%/prebuilt/windows/x86_64//bin/%compiler%.exe ^
+-A %arch% -C %ANDROID_NDK_HOME%/toolchains/%toolchain%/prebuilt/windows-x86_64/bin/%compiler%.exe ^
 -v -s c:\logs\logs-gcc-%arch% -u CXXFLAGS -u CFLAGS ^
 --platform-name remote-android ^
 --platform-url adb://%deviceId%:%port% ^

@@ -38,11 +38,17 @@ EOF
 
 export LLDB_TEST_THREADS=8
 
-if [[ $compiler == *-clang ]]; then
+if [[ "$compiler" == *-clang ]]; then
   toolchain=llvm
   compiler=clang
 else
-  toolchain=${compiler//-gcc}-4.9
+  if [[ "$compiler" == i686-* ]]; then
+    toolchain=x86-4.9
+  elif [[ "$compiler" == x86_64-* ]]; then
+    toolchain=x86_64-4.9
+  else
+    toolchain=${compiler//-gcc}-4.9
+  fi
 fi
 
 host=$(uname -s | tr '[:upper:]' '[:lower:]')
