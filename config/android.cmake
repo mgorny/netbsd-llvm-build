@@ -24,10 +24,11 @@ set(ANDROID_ALLOW_UNDEFINED_SYMBOLS ON
   CACHE BOOL "Allow undefined symbols when linking shared libraries")
 set(ANDROID_PIE FALSE CACHE BOOL "Enable position independent executables")
 
-# These should have been set by the toolchain file, but they aren't.
-# LLVM does not compile without them though, so set them ourselves.
-set(CMAKE_CXX_COMPILER_VERSION 3.8 CACHE STRING "Compiler version")
-set(CMAKE_CXX_STANDARD_COMPUTED_DEFAULT 98 CACHE STRING "Default c++ standard")
+# LLVM is unable to detect <atomic> presence properly on NDK r14 (b/37654339).
+# This is needed to help it along.
+set(HAVE_CXX_ATOMICS_WITH_LIB On CACHE BOOL "Have <atomic> with -latomic")
+set(HAVE_CXX_ATOMICS64_WITH_LIB On
+  CACHE BOOL "Have 64-bit <atomic> with -latomic")
 
 # Set the toolchain file
 if ("$ENV{ANDROID_NDK_HOME}" STREQUAL "")
