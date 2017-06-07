@@ -1,5 +1,5 @@
-set(REPO_ROOT ${CMAKE_CURRENT_LIST_DIR}/../../..)
-set(PREBUILTS ${REPO_ROOT}/prebuilts)
+include(${CMAKE_CURRENT_LIST_DIR}/paths.cmake)
+
 set(TOOLCHAIN "${PREBUILTS}/gcc/linux-x86/host/x86_64-linux-glibc2.15-4.8")
 
 set(CMAKE_C_COMPILER "${PREBUILTS}/clang/linux-x86/host/3.6/bin/clang")

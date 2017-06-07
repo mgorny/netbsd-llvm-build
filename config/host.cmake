@@ -1,5 +1,4 @@
-set(REPO_ROOT ${CMAKE_CURRENT_LIST_DIR}/../../..)
-set(PREBUILTS ${REPO_ROOT}/prebuilts)
+include(${CMAKE_CURRENT_LIST_DIR}/paths.cmake)
 
 # Configure cmake
 set(CMAKE_GENERATOR Ninja CACHE STRING "CMake generator")
