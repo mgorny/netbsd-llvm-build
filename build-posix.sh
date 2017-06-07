@@ -20,6 +20,16 @@ unset CMAKE_TARGETS
 
 CMAKE_TARGETS+=(lldb)
 CMAKE_OPTIONS+=(-C"$LLDB_UTILS/config/$OS.cmake")
+if [ "$OS" == darwin ]; then
+	# Allow the user to override the compiler used. Unfortunately, the prebuilt clang does
+	# not work correctly on the user machines. This makes it impossible to reproduce the
+	# buildbot builds exactly, but this will at least enable us to use the same script.
+	if [ -z "$LLDB_USE_SYSTEM_CC" ]; then
+		CMAKE_OPTIONS+=(-DCMAKE_C_COMPILER="$PREBUILTS/clang/darwin-x86/sdk/3.5/bin/clang")
+		CMAKE_OPTIONS+=(-DCMAKE_CXX_COMPILER="$PREBUILTS/clang/darwin-x86/sdk/3.5/bin/clang++")
+	fi
+fi
+
 CMAKE_OPTIONS+=(-H"$LLVM")
 CMAKE_OPTIONS+=(-B"$BUILD")
 
