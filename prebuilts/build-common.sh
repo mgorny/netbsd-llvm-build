@@ -160,7 +160,7 @@ case "$(uname)" in
 		;;
 esac
 
-PATCHES=$LLDB_UTILS/prebuilts/patches/$PROJECT/$OS
+PATCHES=$LLDB_UTILS/prebuilts/patches/$PROJECT
 if [ -d "$PATCHES" ]; then
 	git -C "$SOURCE" apply "$PATCHES"/*.patch
 fi
