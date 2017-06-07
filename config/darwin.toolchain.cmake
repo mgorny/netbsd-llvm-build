@@ -35,3 +35,5 @@ endif()
 
 set(CMAKE_CXX_STANDARD_INCLUDE_DIRECTORIES
     "${XCODE_SELECT_STDOUT}/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1")
+set(CMAKE_CXX_FLAGS "" CACHE STRING "Flags used by the c++ compiler durint all build types")
+set(CMAKE_CXX_FLAGS "-nostdinc++ ${CMAKE_CXX_FLAGS}")
