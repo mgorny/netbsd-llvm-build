@@ -12,9 +12,6 @@ esac
 
 LLDB_UTILS="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
 
-"$LLDB_UTILS/prebuilts/build-swig.sh" "$@"
-exit $?
-
 source "$LLDB_UTILS/build-$SCRIPT.sh" "$@"
 
 if [ "$(uname)" == Linux ]; then
