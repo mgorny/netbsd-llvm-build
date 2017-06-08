@@ -9,6 +9,14 @@ OS=windows
 LLDB_UTILS=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)
 source "$LLDB_UTILS/build-common.sh" "$@"
 
+# fix-up clang
+# We need to add the clang-cl.exe -> clang.exe symlink,
+# but we don't want to dirty the source repository.
+# So, copy the whole subtree into our build folder.
+rm -rf "$OUT/clang"
+cp -va "$ROOT_DIR/prebuilts/clang/host/windows-x86/clang-4053586" "$OUT/clang"
+cp -va "$OUT/clang/bin/clang.exe" "$OUT/clang/bin/clang-cl.exe"
+
 export SWIG_LIB=$(cygpath --windows "$SWIG_LIB")
 
 unset CMAKE_OPTIONS
@@ -21,7 +29,7 @@ cat > "$OUT/commands.bat" <<-EOF
 	set CMAKE=$(cygpath --windows "${CMAKE}.exe")
 	set BUILD=$(cygpath --windows "$BUILD")
 	set INSTALL=$(cygpath --windows "$INSTALL/host")
-	call "${VS140COMNTOOLS}VsDevCmd.bat"
+	call "${VS140COMNTOOLS}\\..\\..\\VC\\vcvarsall.bat" amd64
 	"%CMAKE%" $(printf '"%s" ' "${CMAKE_OPTIONS[@]}")
 	"%CMAKE%" --build "%BUILD%" --target lldb
 	"%CMAKE%" --build "%BUILD%" --target finish_swig
