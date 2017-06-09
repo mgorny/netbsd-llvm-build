@@ -21,7 +21,7 @@
 # finalize_build to produce the final build artifact
 
 # exit on error
-set -e
+set -e -x
 
 # calculate the root directory from the script path
 # this script lives three directories down from the root
@@ -63,13 +63,15 @@ DEPENDENCIES+=("$LLDB_UTILS")
 
 EXTERNAL=$ROOT_DIR/external
 PREBUILTS=$ROOT_DIR/prebuilts
-SOURCE=$EXTERNAL/$PROJECT
-DEPENDENCIES+=("$SOURCE")
+DEPENDENCIES+=("$EXTERNAL/$PROJECT")
 
 BUILD=$OUT/$PROJECT/build
 INSTALL=$OUT/$PROJECT/install
-rm -rf "$BUILD" "$INSTALL"
-mkdir -p "$BUILD" "$INSTALL"
+SOURCE=$OUT/$PROJECT/source
+rm -rf "$BUILD" "$INSTALL" "$SOURCE"
+mkdir -p "$BUILD" "$INSTALL" "$SOURCE"
+
+git -C "$EXTERNAL/$PROJECT" archive @ --format=tar | tar xf - -C "$SOURCE"
 
 case "$(uname)" in
 	Linux)
