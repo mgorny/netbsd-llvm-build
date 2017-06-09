@@ -6,6 +6,8 @@
 
 PROJECT=swig
 
+export LDFLAGS=-static
+
 SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)
 source "$SCRIPT_DIR/build-common.sh" "$@"
 
@@ -23,7 +25,5 @@ make -j"$CORES"
 # install-ccache fails on OS X
 make DESTDIR="$INSTALL" install-main install-lib
 popd
-
-ln -fns swig "$INSTALL/bin/swig2.0"
 
 finalize_build
