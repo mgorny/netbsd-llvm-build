@@ -19,6 +19,4 @@ cmakenbuild i386
 cmakenbuild x86_64
 cmakenbuild arm
 cmakenbuild aarch64
-cmakenbuild mips
-cmakenbuild mips64
 markBuildComplete

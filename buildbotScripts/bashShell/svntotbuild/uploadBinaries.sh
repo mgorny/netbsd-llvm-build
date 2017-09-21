@@ -13,7 +13,7 @@ gsutil mv LATEST $gsbinaries/
 
 {
     printf '{ '
-    for i in arm aarch64 i386 x86_64 mips mips64; do
+    for i in arm aarch64 i386 x86_64; do
         printf '"%s_server_size": %d, ' "$i" "$(wc -c <"$buildDir/install/android-$i/bin/lldb-server")"
     done
     printf '"revision": %d }\n' "$rev"
