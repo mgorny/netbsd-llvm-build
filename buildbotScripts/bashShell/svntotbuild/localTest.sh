@@ -30,6 +30,4 @@ cc_log=${config[1]////-}
   -v -s "logs-$cc_log-$arch" \
   -u CXXFLAGS -u CFLAGS \
   --env ARCHIVER=ar --env OBJCOPY=objcopy \
-  --channel "gdb-remote packets" \
-  --channel "lldb all" \
   --skip-category lldb-mi
