@@ -4,6 +4,7 @@ config=(${1//,/ })
 
 compiler=${config[1]}
 arch=${config[2]}
+categories=(${config[3]//:/ })
 
 function clean {
   svn status $lldbDir/test --no-ignore | grep '^[I?]' | cut -c 9- | while IFS= read -r f; do echo "$f"; rm -rf "$f"; done || true
@@ -24,13 +25,25 @@ then
 fi
 cc_log=${config[1]////-}
 
-"$lldbDir/test/dotest.py" \
-  --executable "$buildDir/bin/lldb" \
-  -A "$arch" -C "$compiler" \
-  -v -s "logs-$cc_log-$arch" \
-  -u CXXFLAGS -u CFLAGS \
-  --env ARCHIVER=ar --env OBJCOPY=objcopy \
-  --channel "gdb-remote packets" \
-  --channel "lldb all" \
-  --channel "posix all" \
-  --skip-category lldb-mi
+dotest_args=()
+dotest_args+=(--executable "$buildDir/bin/lldb")
+dotest_args+=(-A "$arch" -C "$compiler")
+dotest_args+=(-v -s "logs-$cc_log-$arch")
+dotest_args+=(-u CXXFLAGS -u CFLAGS)
+dotest_args+=(--env ARCHIVER=ar --env OBJCOPY=objcopy)
+for c in "gdb-remote packets" "lldb all"; do
+  dotest_args+=(--channel "$c")
+done
+for c in "${categories[@]}"; do
+  case "$c" in
+    -*)
+      dotest_args+=(--skip-category "${c#-}")
+      ;;
+    +*)
+      dotest_args+=(--category "${c#+}")
+      ;;
+  esac
+done
+
+
+"$lldbDir/test/dotest.py" "${dotest_args[@]}"
