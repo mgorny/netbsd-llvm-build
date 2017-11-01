@@ -26,24 +26,11 @@ fi
 cc_log=${config[1]////-}
 
 dotest_args=()
-dotest_args+=(--executable "$buildDir/bin/lldb")
 dotest_args+=(-A "$arch" -C "$compiler")
 dotest_args+=(-v -s "logs-$cc_log-$arch")
 dotest_args+=(-u CXXFLAGS -u CFLAGS)
 dotest_args+=(--env ARCHIVER=ar --env OBJCOPY=objcopy)
-for c in "gdb-remote packets" "lldb all"; do
-  dotest_args+=(--channel "$c")
-done
-for c in "${categories[@]}"; do
-  case "$c" in
-    -*)
-      dotest_args+=(--skip-category "${c#-}")
-      ;;
-    +*)
-      dotest_args+=(--category "${c#+}")
-      ;;
-  esac
-done
+appendCommonArgs
 
 
 "$lldbDir/test/dotest.py" "${dotest_args[@]}"

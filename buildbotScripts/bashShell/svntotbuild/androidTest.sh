@@ -1,10 +1,12 @@
 #!/usr/bin/env bash
 set -e
 config=(${1//,/ })
-export deviceId=${config[0]}
-export compiler=${config[1]}
-export arch=${config[2]}
-export socket=${config[3]}
+deviceId=${config[0]}
+compiler=${config[1]}
+arch=${config[2]}
+socket=${config[3]}
+categories=(${config[4]//:/ })
+
 function clean {
   svn status $lldbDir/test --no-ignore | grep '^[I?]' | cut -c 9- | while IFS= read -r f; do echo "$f"; rm -rf "$f"; done || true
   adb -s $deviceId shell ps | grep lldb-server | awk '{print $2}' | xargs adb -s $deviceId shell kill || true
@@ -53,13 +55,13 @@ fi
 
 host=$(uname -s | tr '[:upper:]' '[:lower:]')
 
-"$lldbDir/test/dotest.py" \
-  --executable "$buildDir/bin/lldb" \
-  -A "$arch" -C "$ANDROID_NDK_HOME/toolchains/$toolchain/prebuilt/$host-x86_64/bin/$compiler" \
-  -v -s "logs-$compiler-$arch-$deviceId" -u CXXFLAGS -u CFLAGS \
-  --channel "gdb-remote packets" --channel "lldb all" \
-  --platform-name remote-android \
-  --platform-url "$connect_url" \
-  --platform-working-dir "$remoteDir" \
-  --env OS=Android \
-  --skip-category lldb-mi
+dotest_args=()
+dotest_args+=(-A "$arch")
+dotest_args+=(-C "$ANDROID_NDK_HOME/toolchains/$toolchain/prebuilt/$host-x86_64/bin/$compiler")
+dotest_args+=(-v -s "logs-$compiler-$arch-$deviceId" -u CXXFLAGS -u CFLAGS)
+dotest_args+=(--platform-name remote-android)
+dotest_args+=(--platform-url "$connect_url")
+dotest_args+=(--platform-working-dir "$remoteDir")
+appendCommonArgs
+
+"$lldbDir/test/dotest.py" "${dotest_args[@]}"
