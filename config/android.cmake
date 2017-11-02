@@ -25,12 +25,6 @@ set(ANDROID_ALLOW_UNDEFINED_SYMBOLS ON
 set(ANDROID_PIE TRUE CACHE BOOL "Enable position independent executables")
 set(ANDROID_STL "c++_static" CACHE STRING "Use LLVM libc++")
 
-# LLVM is unable to detect <atomic> presence properly on NDK r14 (b/37654339).
-# This is needed to help it along.
-set(HAVE_CXX_ATOMICS_WITH_LIB On CACHE BOOL "Have <atomic> with -latomic")
-set(HAVE_CXX_ATOMICS64_WITH_LIB On
-  CACHE BOOL "Have 64-bit <atomic> with -latomic")
-
 # Set the toolchain file
 if ("$ENV{ANDROID_NDK_HOME}" STREQUAL "")
   message(WARNING "ANDROID_NDK_HOME environment variable not set. Don't forget "
