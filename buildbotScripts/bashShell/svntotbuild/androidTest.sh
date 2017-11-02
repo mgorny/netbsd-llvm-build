@@ -62,7 +62,6 @@ dotest_args+=(-v -s "logs-$compiler-$arch-$deviceId" -u CXXFLAGS -u CFLAGS)
 dotest_args+=(--platform-name remote-android)
 dotest_args+=(--platform-url "$connect_url")
 dotest_args+=(--platform-working-dir "$remoteDir")
-dotest_args+=(--env OS=Android)
 appendCommonArgs
 
 "$lldbDir/test/dotest.py" "${dotest_args[@]}"
