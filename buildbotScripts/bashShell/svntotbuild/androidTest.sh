@@ -16,7 +16,7 @@ trap clean EXIT
 
 set -x
 adb -s $deviceId shell getprop ro.build.fingerprint
-api=$(adb -s $deviceId shell getprop ro.build.version.sdk)
+api=$(adb -s $deviceId shell getprop ro.build.version.sdk | tr -d '\r')
 if [ "$api" -ge 26 ]; then
   adb -s $deviceId shell killall -KILL lldb-server || true
 else
