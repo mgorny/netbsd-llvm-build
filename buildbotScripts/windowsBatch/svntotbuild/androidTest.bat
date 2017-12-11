@@ -1,9 +1,25 @@
+echo on
 SET testexitcode=0
-FOR /F "tokens=1,2,3 delims=," %%A IN ("%*") DO (
+FOR /F "tokens=1,2,3,4,5 delims=," %%A IN ("%*") DO (
     SET deviceId=%%A
     SET compiler=%%B
     SET arch=%%C
+    SET socket=%%D
+    SET categories=%%E
 )
+
+:loop
+IF "%categories%"=="" goto done
+FOR /F "tokens=1* delims=:" %%A IN ("%categories%") DO (
+    SET category=%%A
+    SET categories=%%B
+)
+IF "%category:~0,1%"=="-" SET switch=--skip-category
+IF "%category:~0,1%"=="+" SET switch=--category
+SET categoryArgs=%categoryArgs% %switch% %category:~1%
+goto loop
+:done
+
 SET LLDB_TEST_THREADS=8
 
 call taskkill /f /im "adb.exe" || true
@@ -32,12 +48,11 @@ if "clang"=="%compiler:~-5%" (
 call %pythonHome%\python.exe %lldbDir%\test\dotest.py ^
 --executable %buildDir%\bin\lldb.exe ^
 -A %arch% -C %ANDROID_NDK_HOME%/toolchains/%toolchain%/prebuilt/windows-x86_64/bin/%compiler%.exe ^
--v -s c:\logs\logs-gcc-%arch% -u CXXFLAGS -u CFLAGS ^
+-v -s c:\logs\logs-gcc-%arch% ^
 --platform-name remote-android ^
 --platform-url adb://%deviceId%:%port% ^
 --platform-working-dir %remoteDir% ^
---env OS=Android ^
---skip-category lldb-mi
+%categoryArgs%
 
 SET testexitcode=%errorlevel%
 
