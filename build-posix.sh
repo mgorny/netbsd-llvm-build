@@ -20,16 +20,6 @@ unset CMAKE_TARGETS
 
 CMAKE_TARGETS+=(lldb)
 CMAKE_OPTIONS+=(-C"$LLDB_UTILS/config/$OS.cmake")
-if [ "$OS" == darwin ]; then
-	# Allow the user to override the compiler used. Unfortunately, the prebuilt clang does
-	# not work correctly on the user machines. This makes it impossible to reproduce the
-	# buildbot builds exactly, but this will at least enable us to use the same script.
-	if [ -z "$LLDB_USE_SYSTEM_CC" ]; then
-		CMAKE_OPTIONS+=(-DCMAKE_C_COMPILER="$PREBUILTS/clang/darwin-x86/sdk/3.5/bin/clang")
-		CMAKE_OPTIONS+=(-DCMAKE_CXX_COMPILER="$PREBUILTS/clang/darwin-x86/sdk/3.5/bin/clang++")
-	fi
-fi
-
 CMAKE_OPTIONS+=(-H"$LLVM")
 CMAKE_OPTIONS+=(-B"$BUILD")
 
@@ -51,6 +41,7 @@ if [ "$OS" == linux ]; then
 	cp -a "$TOOLCHAIN/sysroot/usr/lib/"libtinfo.so*      "$INSTALL/host/lib/"
 	cp -a "$PYTHON_DIR/lib/"{libpython2.7.so*,python2.7} "$INSTALL/host/lib/"
 else
+	cp -a "$PREBUILTS/clang/host/$OS-x86/clang-$CLANG_VERSION/lib64/libc++.dylib" "$INSTALL/host/lib"
 	cp -a "$BUILD/lib/"liblldb.*dylib                    "$INSTALL/host/lib/"
 	mkdir "$INSTALL/host/lib/python2.7"
 fi

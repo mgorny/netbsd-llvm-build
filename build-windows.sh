@@ -14,7 +14,7 @@ source "$LLDB_UTILS/build-common.sh" "$@"
 # but we don't want to dirty the source repository.
 # So, copy the whole subtree into our build folder.
 rm -rf "$OUT/clang"
-cp -va "$ROOT_DIR/prebuilts/clang/host/windows-x86/clang-4053586" "$OUT/clang"
+cp -va "$ROOT_DIR/prebuilts/clang/host/windows-x86/clang-${CLANG_VERSION}" "$OUT/clang"
 cp -va "$OUT/clang/bin/clang.exe" "$OUT/clang/bin/clang-cl.exe"
 
 export SWIG_LIB=$(cygpath --windows "$SWIG_LIB")

@@ -52,6 +52,7 @@ CMAKE_DIR=$PREBUILTS/cmake/$OS-x86
 CMAKE=$CMAKE_DIR/bin/cmake
 SWIG_DIR=$PREBUILTS/swig/$OS-x86
 PYTHON_DIR=$PREBUILTS/python/$OS-x86
+CLANG_VERSION=$(cat "$LLDB_UTILS/config/clang.version")
 
 export SWIG_LIB=$SWIG_DIR/share/swig/3.0.12
 

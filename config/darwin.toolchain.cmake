@@ -1,3 +1,11 @@
-# Unfortunately our darwin build is not very hermetic, so this file is almost empty
+set(REPO_ROOT ${CMAKE_CURRENT_LIST_DIR}/../../..)
+set(PREBUILTS ${REPO_ROOT}/prebuilts)
+file(READ "${CMAKE_CURRENT_LIST_DIR}/clang.version" CLANG_VERSION)
+string(STRIP "${CLANG_VERSION}" CLANG_VERSION)
+set(CLANG "${PREBUILTS}/clang/host/darwin-x86/clang-${CLANG_VERSION}")
+
+set(CMAKE_C_COMPILER "${CLANG}/bin/clang")
+set(CMAKE_CXX_COMPILER "${CLANG}/bin/clang++")
+set(CMAKE_CXX_STANDARD_LIBRARIES_INIT "-L${CLANG}/lib64")
 
 set(CMAKE_OSX_DEPLOYMENT_TARGET 10.10 CACHE STRING "Minimum OSX version")
