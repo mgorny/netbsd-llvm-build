@@ -49,6 +49,7 @@ call %pythonHome%\python.exe %lldbDir%\test\dotest.py ^
 --executable %buildDir%\bin\lldb.exe ^
 -A %arch% -C %ANDROID_NDK_HOME%/toolchains/%toolchain%/prebuilt/windows-x86_64/bin/%compiler%.exe ^
 -v -s c:\logs\logs-gcc-%arch% ^
+--build-dir c:\logs\build ^
 --platform-name remote-android ^
 --platform-url adb://%deviceId%:%port% ^
 --platform-working-dir %remoteDir% ^
