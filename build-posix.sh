@@ -26,12 +26,14 @@ CMAKE_OPTIONS+=(-B"$BUILD")
 
 "$CMAKE" "${CMAKE_OPTIONS[@]}"
 "$CMAKE" --build "$BUILD" --target lldb
+"$CMAKE" --build "$BUILD" --target llvm-symbolizer
 
 # install target builds/installs 5G of stuff we don't need
 #DESTDIR="$INSTALL/host" "$CMAKE" --build "$BUILD" --target install
 
 mkdir -p "$INSTALL/host/"{bin,lib,include/lldb,include/LLDB}
 cp -a "$BUILD/bin/"lldb*                             "$INSTALL/host/bin/"
+cp -a "$BUILD/bin/"llvm-symbolizer                   "$INSTALL/host/bin/"
 if [ "$OS" == linux ]; then
 	TOOLCHAIN=$PREBUILTS/gcc/linux-x86/host/x86_64-linux-glibc2.15-4.8
 

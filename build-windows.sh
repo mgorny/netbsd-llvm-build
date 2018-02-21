@@ -32,6 +32,7 @@ cat > "$OUT/commands.bat" <<-EOF
 	call "${VS140COMNTOOLS}\\..\\..\\VC\\vcvarsall.bat" amd64
 	"%CMAKE%" $(printf '"%s" ' "${CMAKE_OPTIONS[@]}")
 	"%CMAKE%" --build "%BUILD%" --target lldb
+	"%CMAKE%" --build "%BUILD%" --target llvm-symbolizer
 	"%CMAKE%" --build "%BUILD%" --target finish_swig
 	@rem Too large and missing site-packages - http://llvm.org/pr24378
 	@rem set DESTDIR=%INSTALL%
@@ -43,7 +44,7 @@ cmd /c "$(cygpath --windows "$OUT/commands.bat")"
 rm "$OUT/commands.bat"
 
 mkdir -p "$INSTALL/host/"{bin,lib,include/lldb,include/LLDB,dlls}
-cp -a "$BUILD/bin/"{lldb.exe,liblldb.dll}         "$INSTALL/host/bin/"
+cp -a "$BUILD/bin/"{lldb.exe,liblldb.dll,llvm-symbolizer.exe}   "$INSTALL/host/bin/"
 cp -a "$PYTHON_DIR/x86/"{python.exe,python27.dll} "$INSTALL/host/bin/"
 cp -a "$BUILD/lib/"{liblldb.lib,site-packages}    "$INSTALL/host/lib/"
 cp -a "$PYTHON_DIR/x86/Lib/"*                     "$INSTALL/host/lib/"
