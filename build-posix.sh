@@ -42,6 +42,9 @@ if [ "$OS" == linux ]; then
 	cp -a "$PREBUILTS/libedit/linux-x86/lib/"libedit.so* "$INSTALL/host/lib/"
 	cp -a "$TOOLCHAIN/sysroot/usr/lib/"libtinfo.so*      "$INSTALL/host/lib/"
 	cp -a "$PYTHON_DIR/lib/"{libpython2.7.so*,python2.7} "$INSTALL/host/lib/"
+
+        mv "$INSTALL/host/bin/lldb" "$INSTALL/host/bin/lldb.real"
+        cp -a "$LLDB_UTILS/scripts/lldb.sh" "$INSTALL/host/bin/lldb"
 else
 	cp -a "$PREBUILTS/clang/host/$OS-x86/clang-$CLANG_VERSION/lib64/libc++.dylib" "$INSTALL/host/lib"
 	cp -a "$BUILD/lib/"liblldb.*dylib                    "$INSTALL/host/lib/"
