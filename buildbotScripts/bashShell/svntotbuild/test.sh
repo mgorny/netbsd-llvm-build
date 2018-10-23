@@ -4,6 +4,7 @@ source setEnv.sh
 
 function appendCommonArgs {
   dotest_args+=(--executable "$buildDir/bin/lldb")
+  dotest_args+=(--filecheck "$buildDir/bin/FileCheck")
   for c in "gdb-remote packets" "lldb all"; do
     dotest_args+=(--channel "$c")
   done
