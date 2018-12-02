@@ -17,5 +17,5 @@ trap 'kill "${st_ping_pid}"' EXIT
 set -x
 nice -n 10 ninja -C "${buildDir}" \
 	$(ninja -C "${buildDir}" help | cut -d: -f1 | grep '\.a$')
-nice -n 10 ninja -j 2 -C "${buildDir}"
+nice -n 10 ninja -j 4 -C "${buildDir}"
 markBuildComplete
