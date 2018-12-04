@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 set -e
 source setEnv.sh
+exit 0
 
 function appendCommonArgs {
   dotest_args+=(--executable "$buildDir/bin/lldb")
