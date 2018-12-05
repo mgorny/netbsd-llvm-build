@@ -24,6 +24,7 @@ export gsbinaries=gs://lldb_binaries
 export llvmDir=$rootDir/llvm
 export lldbDir=$llvmDir/tools/lldb
 export clangDir=$llvmDir/tools/clang
+export cteDir=$llvmDir/tools/clang/tools/extra
 export lockDir=/var/tmp/lldbbuild.exclusivelock
 export TMPDIR=$rootDir/tmp/
 mkdir -p $TMPDIR
