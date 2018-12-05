@@ -9,6 +9,7 @@ export llvmsvn=http://llvm.org/svn/llvm-project/llvm/trunk
 export clangsvn=http://llvm.org/svn/llvm-project/cfe/trunk
 export ctesvn=http://llvm.org/svn/llvm-project/clang-tools-extra/trunk
 export lldbsvn=http://llvm.org/svn/llvm-project/lldb/trunk
+export lldsvn=http://llvm.org/svn/llvm-project/lld/trunk
 
 if [ "$1" == "" ]; then
     export rev=HEAD
@@ -29,3 +30,4 @@ svnFunc $llvmDir $llvmsvn
 svnFunc $clangDir $clangsvn
 svnFunc $cteDir $ctesvn
 svnFunc $lldbDir $lldbsvn
+svnFunc $lldDir $lldsvn

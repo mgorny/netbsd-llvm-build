@@ -23,6 +23,7 @@ export gstrace=gs://lldb_test_traces
 export gsbinaries=gs://lldb_binaries
 export llvmDir=$rootDir/llvm
 export lldbDir=$llvmDir/tools/lldb
+export lldDir=$llvmDir/tools/lld
 export clangDir=$llvmDir/tools/clang
 export cteDir=$llvmDir/tools/clang/tools/extra
 export lockDir=/var/tmp/lldbbuild.exclusivelock
