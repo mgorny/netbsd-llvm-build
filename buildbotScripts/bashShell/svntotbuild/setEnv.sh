@@ -25,6 +25,7 @@ export llvmDir=$rootDir/llvm
 export lldbDir=$llvmDir/tools/lldb
 export lldDir=$llvmDir/tools/lld
 export testsuiteDir=$llvmDir/projects/test-suite
+export openmpDir=$llvmDir/projects/openmp
 export clangDir=$llvmDir/tools/clang
 export cteDir=$llvmDir/tools/clang/tools/extra
 export lockDir=/var/tmp/lldbbuild.exclusivelock

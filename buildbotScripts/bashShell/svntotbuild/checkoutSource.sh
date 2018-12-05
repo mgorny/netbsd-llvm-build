@@ -11,6 +11,7 @@ export ctesvn=http://llvm.org/svn/llvm-project/clang-tools-extra/trunk
 export lldbsvn=http://llvm.org/svn/llvm-project/lldb/trunk
 export lldsvn=http://llvm.org/svn/llvm-project/lld/trunk
 export testsuitesvn=http://llvm.org/svn/llvm-project/test-suite/trunk
+export openmpsvn=http://llvm.org/svn/llvm-project/openmp/trunk
 
 if [ "$1" == "" ]; then
     export rev=HEAD
@@ -33,3 +34,4 @@ svnFunc $cteDir $ctesvn
 svnFunc $lldbDir $lldbsvn
 svnFunc $lldDir $lldsvn
 #svnFunc $testsuiteDir $testsuitesvn
+#svnFunc $openmpDir $openmpsvn
