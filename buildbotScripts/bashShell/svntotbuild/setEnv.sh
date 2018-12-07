@@ -28,6 +28,7 @@ export testsuiteDir=$llvmDir/projects/test-suite
 export openmpDir=$llvmDir/projects/openmp
 export clangDir=$llvmDir/tools/clang
 export cteDir=$llvmDir/tools/clang/tools/extra
+export pollyDir=$llvmDir/tools/polly
 export lockDir=/var/tmp/lldbbuild.exclusivelock
 export TMPDIR=$rootDir/tmp/
 mkdir -p $TMPDIR
