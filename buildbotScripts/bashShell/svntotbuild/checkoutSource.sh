@@ -13,6 +13,9 @@ export lldsvn=http://llvm.org/svn/llvm-project/lld/trunk
 export pollysvn=http://llvm.org/svn/llvm-project/polly/trunk
 export testsuitesvn=http://llvm.org/svn/llvm-project/test-suite/trunk
 export openmpsvn=http://llvm.org/svn/llvm-project/openmp/trunk
+export libunwindsvn=http://llvm.org/svn/llvm-project/libunwind/trunk
+export libcxxabisvn=http://llvm.org/svn/llvm-project/libcxxabi/trunk
+export libcxxsvn=http://llvm.org/svn/llvm-project/libcxx/trunk
 
 if [ "$1" == "" ]; then
     export rev=HEAD
@@ -37,3 +40,6 @@ svnFunc $lldDir $lldsvn
 svnFunc $pollyDir $pollysvn
 #svnFunc $testsuiteDir $testsuitesvn
 #svnFunc $openmpDir $openmpsvn
+svnFunc $libunwindDir $libunwindsvn
+svnFunc $libcxxabiDir $libcxxabisvn
+svnFunc $libcxxDir $libcxxsvn

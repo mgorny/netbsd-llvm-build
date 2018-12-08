@@ -29,6 +29,9 @@ export openmpDir=$llvmDir/projects/openmp
 export clangDir=$llvmDir/tools/clang
 export cteDir=$llvmDir/tools/clang/tools/extra
 export pollyDir=$llvmDir/tools/polly
+export libunwindDir=$llvmDir/projects/libunwind
+export libcxxabiDir=$llvmDir/projects/libcxxabi
+export libcxxDir=$llvmDir/projects/libcxx
 export lockDir=/var/tmp/lldbbuild.exclusivelock
 export TMPDIR=$rootDir/tmp/
 mkdir -p $TMPDIR
