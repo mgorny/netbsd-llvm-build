@@ -10,7 +10,6 @@ markBuildIncomplete
 buildType=Release
 mkdir -p "$buildDir"
 cd "$buildDir"
-rm -f CMakeCache.txt
 host=$(uname)
 if [[ "$host" == NetBSD ]]; then
   # TODO: /usr/pkg/lib rpath needs to be appended after builddir
