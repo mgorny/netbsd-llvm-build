@@ -39,7 +39,7 @@ svnFunc $lldbDir $lldbsvn
 svnFunc $lldDir $lldsvn
 svnFunc $pollyDir $pollysvn
 #svnFunc $testsuiteDir $testsuitesvn
-#svnFunc $openmpDir $openmpsvn
+svnFunc $openmpDir $openmpsvn
 svnFunc $libunwindDir $libunwindsvn
 svnFunc $libcxxabiDir $libcxxabisvn
 svnFunc $libcxxDir $libcxxsvn
