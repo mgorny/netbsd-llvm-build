@@ -5,4 +5,6 @@ source setEnv.sh
 set -x
 nice -n 10 ninja -k 9999 -C "$buildDir" check-lit check-llvm check-clang \
 	check-clang-tools check-lld check-polly check-unwind \
-	check-libcxxabi test-suite # check-openmp
+	check-libcxxabi # test-suite # check-openmp
+
+# check-openmp and test-suite trigger lib(std)c++
