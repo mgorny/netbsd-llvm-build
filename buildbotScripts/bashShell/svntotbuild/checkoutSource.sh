@@ -33,13 +33,13 @@ function svnFunc {
 }
 
 svnFunc $llvmDir $llvmsvn
-#svnFunc $clangDir $clangsvn
-#svnFunc $cteDir $ctesvn
-#svnFunc $lldbDir $lldbsvn
+svnFunc $clangDir $clangsvn
+svnFunc $cteDir $ctesvn
+svnFunc $lldbDir $lldbsvn
 svnFunc $lldDir $lldsvn
-#svnFunc $pollyDir $pollysvn
-#svnFunc $testsuiteDir $testsuitesvn
-#svnFunc $openmpDir $openmpsvn
-#svnFunc $libunwindDir $libunwindsvn
-#svnFunc $libcxxabiDir $libcxxabisvn
-#svnFunc $libcxxDir $libcxxsvn
+svnFunc $pollyDir $pollysvn
+svnFunc $testsuiteDir $testsuitesvn
+svnFunc $openmpDir $openmpsvn
+svnFunc $libunwindDir $libunwindsvn
+svnFunc $libcxxabiDir $libcxxabisvn
+svnFunc $libcxxDir $libcxxsvn
