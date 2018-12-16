@@ -38,7 +38,7 @@ svnFunc $cteDir $ctesvn
 svnFunc $lldbDir $lldbsvn
 svnFunc $lldDir $lldsvn
 svnFunc $pollyDir $pollysvn
-#svnFunc $testsuiteDir $testsuitesvn
+svnFunc $testsuiteDir $testsuitesvn
 svnFunc $openmpDir $openmpsvn
 svnFunc $libunwindDir $libunwindsvn
 svnFunc $libcxxabiDir $libcxxabisvn
