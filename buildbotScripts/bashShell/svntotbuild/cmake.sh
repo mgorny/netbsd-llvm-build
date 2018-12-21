@@ -18,7 +18,8 @@ if [[ "$host" == NetBSD ]]; then
     -DCMAKE_BUILD_RPATH="${PWD}/lib;/usr/pkg/lib" \
     -DCMAKE_INSTALL_RPATH=/usr/pkg/lib \
     -DLIBCXXABI_USE_LLVM_UNWINDER=ON \
-    -DLLVM_LIT_ARGS="-vv;--param;cxx_under_test=${PWD}/bin/clang++"
+    -DLLVM_LIT_ARGS="-vv;--param;cxx_under_test=${PWD}/bin/clang++" \
+    -DOPENMP_TEST_FLAGS="-cxx-isystem${PWD}/include/c++/v1"
 elif [[ "$host" == Linux ]]; then
   cmake -GNinja -DCMAKE_BUILD_TYPE="$buildType" "$llvmDir" -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DLLVM_ENABLE_EH=YES -DLLVM_ENABLE_RTTI=YES "$@"
 else
