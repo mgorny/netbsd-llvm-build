@@ -20,6 +20,9 @@ if [[ "$host" == NetBSD ]]; then
     -DLIBCXXABI_USE_LLVM_UNWINDER=ON \
     -DLLVM_LIT_ARGS="-vv;--param;cxx_under_test=${PWD}/bin/clang++" \
     -DOPENMP_TEST_FLAGS="-cxx-isystem${PWD}/include/c++/v1"
+
+  # reduce job count to make lldb tests more stable
+  sed -i -e '/COMMAND.*lit.*lldb\/lit$/s:-vv:-j2 -vv:' build.ninja
 elif [[ "$host" == Linux ]]; then
   cmake -GNinja -DCMAKE_BUILD_TYPE="$buildType" "$llvmDir" -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DLLVM_ENABLE_EH=YES -DLLVM_ENABLE_RTTI=YES "$@"
 else
