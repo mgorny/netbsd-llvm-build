@@ -17,6 +17,7 @@ if [[ "$host" == NetBSD ]]; then
     -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ \
     -DCMAKE_BUILD_RPATH="${PWD}/lib;/usr/pkg/lib" \
     -DCMAKE_INSTALL_RPATH=/usr/pkg/lib \
+    -DLIBCXX_CXX_ABI=libcxxabi \
     -DLIBCXXABI_USE_LLVM_UNWINDER=ON \
     -DLLVM_LIT_ARGS="-vv;--param;cxx_under_test=${PWD}/bin/clang++" \
     -DOPENMP_TEST_FLAGS="-cxx-isystem${PWD}/include/c++/v1"
