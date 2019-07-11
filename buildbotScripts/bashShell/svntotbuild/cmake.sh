@@ -22,7 +22,8 @@ if [[ "$host" == NetBSD ]]; then
     -DLIBCXX_CXX_ABI=default \
     -DLIBCXXABI_USE_LLVM_UNWINDER=ON \
     -DLLVM_LIT_ARGS="-vv;--param;cxx_under_test=${PWD}/bin/clang++" \
-    -DOPENMP_TEST_FLAGS="-cxx-isystem${PWD}/include/c++/v1"
+    -DOPENMP_TEST_FLAGS="-cxx-isystem${PWD}/include/c++/v1" \
+    -DPYTHON_EXECUTABLE=/usr/pkg/bin/python2.7
 
   # reduce job count to make lldb tests more stable
   sed -i -e '/COMMAND.*lit.*lldb\/lit$/s:-vv:-j1 -vv:' build.ninja
