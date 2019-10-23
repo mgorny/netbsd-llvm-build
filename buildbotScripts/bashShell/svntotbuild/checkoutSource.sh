@@ -20,10 +20,11 @@ makesym() {
 }
 
 if [ -d $projDir/.git ]; then
-  (cd $projDir; git pull)
+  (cd $projDir; git fetch)
 else
   git clone $monogit $projDir
 fi
+git checkout "$rev"
 
 makesym ../../lldb $llvmDir/tools/lldb
 makesym ../../lld $llvmDir/tools/lld
