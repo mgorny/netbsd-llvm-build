@@ -14,9 +14,7 @@ else
 fi
 
 makesym() {
-  if ! [ -h "$2" ]; then
-    ln -s "$1" "$2"
-  fi
+  ln -f -s "$1" "$2"
 }
 
 if [ -d $projDir/.git ]; then
@@ -29,7 +27,7 @@ fi
 makesym ../../lldb $llvmDir/tools/lldb
 makesym ../../lld $llvmDir/tools/lld
 makesym ../../clang $llvmDir/tools/clang
-makesym ../../../../clang-tools-extra $llvmDir/tools/clang/tools/extra
+makesym ../../clang-tools-extra $llvmDir/tools/clang/tools/extra
 makesym ../../polly $llvmDir/tools/polly
 #makesym ../../test-suite $llvmDir/projects/test-suite
 makesym ../../libunwind $llvmDir/projects/libunwind
