@@ -8,7 +8,7 @@ maybeCleanUp
 export monogit=https://github.com/llvm/llvm-project
 
 if [ "$1" == "" ]; then
-    export rev=HEAD
+    export rev=origin/master
 else
     export rev=$1
 fi
@@ -24,7 +24,7 @@ if [ -d $projDir/.git ]; then
 else
   git clone $monogit $projDir
 fi
-git checkout "$rev"
+(cd $projDir; git checkout "$rev")
 
 makesym ../../lldb $llvmDir/tools/lldb
 makesym ../../lld $llvmDir/tools/lld
