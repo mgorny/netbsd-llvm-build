@@ -5,4 +5,4 @@ source setEnv.sh
 # the entire output of this script will be used to set got_revision property of buildbot
 # nothing but the revision number should be output by this script
 set +x
-git --git-dir=$rootDir/.git rev-parse HEAD
+git --git-dir=$projDir/.git rev-parse HEAD

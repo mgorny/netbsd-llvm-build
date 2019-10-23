@@ -19,10 +19,10 @@ makesym() {
   fi
 }
 
-if [ -d $rootDir/.git ]; then
-  git pull
+if [ -d $projDir/.git ]; then
+  (cd $projDir; git pull)
 else
-  git clone $monogit $rootDir
+  git clone $monogit $projDir
 fi
 
 makesym ../../lldb $llvmDir/tools/lldb

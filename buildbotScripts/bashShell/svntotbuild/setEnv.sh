@@ -21,7 +21,8 @@ export ANDROID_NDK_HOME=$dataRoot/android-ndk-r17
 export port=5430
 export gstrace=gs://lldb_test_traces
 export gsbinaries=gs://lldb_binaries
-export llvmDir=$rootDir/llvm
+export projDir=$rootDir/llvm-project
+export llvmDir=$projDir/llvm
 export lockDir=/var/tmp/lldbbuild.exclusivelock
 export TMPDIR=$rootDir/tmp/
 mkdir -p $TMPDIR
