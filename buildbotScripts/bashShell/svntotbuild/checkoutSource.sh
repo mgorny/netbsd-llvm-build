@@ -30,7 +30,7 @@ makesym ../../lld $llvmDir/tools/lld
 makesym ../../clang $llvmDir/tools/clang
 makesym ../../../../clang-tools-extra $llvmDir/tools/clang/tools/extra
 makesym ../../polly $llvmDir/tools/polly
-makesym ../../test-suite $llvmDir/projects/test-suite
+#makesym ../../test-suite $llvmDir/projects/test-suite
 makesym ../../libunwind $llvmDir/projects/libunwind
 makesym ../../libcxxabi $llvmDir/projects/libcxxabi
 makesym ../../libcxx $llvmDir/projects/libcxx
