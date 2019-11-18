@@ -17,7 +17,7 @@ if [[ "$host" == NetBSD ]]; then
   # 'Do not cleverly link against libc++abi just because it happens to be there'
   cmake -GNinja -DCMAKE_BUILD_TYPE="$buildType" "$llvmDir" \
     -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ \
-    -DCMAKE_C_FLAGS=-O2 -DCMAKE_CXX_FLAGS=-O2 \
+    -DCMAKE_C_FLAGS_RELEASE='-O2' -DCMAKE_CXX_FLAGS_RELEASE='-O2' \
     -DCMAKE_BUILD_RPATH="${PWD}/lib;/usr/pkg/lib" \
     -DCMAKE_INSTALL_RPATH=/usr/pkg/lib \
     -DLIBCXX_CXX_ABI=default \
