@@ -34,3 +34,4 @@ makesym ../../libunwind $llvmDir/projects/libunwind
 makesym ../../libcxxabi $llvmDir/projects/libcxxabi
 makesym ../../libcxx $llvmDir/projects/libcxx
 makesym ../../openmp $llvmDir/projects/openmp
+makesym ../../compiler-rt $llvmDir/projects/compiler-rt
