@@ -16,8 +16,8 @@ trap 'kill "${st_ping_pid}"' EXIT
 
 set -x
 ninja -C "${buildDir}" \
-	$(ninja -C "${buildDir}" help | cut -d: -f1 | grep '^[^-]*TableGen$')
+	$(ninja -C "${buildDir}" -t targets all | cut -d: -f1 | grep '^[^-]*TableGen$')
 ninja -C "${buildDir}" \
-	$(ninja -C "${buildDir}" help | cut -d: -f1 | grep '\.a$')
+	$(ninja -C "${buildDir}" -t targets all | cut -d: -f1 | grep '\.a$')
 ninja -j 4 -C "${buildDir}"
 markBuildComplete
