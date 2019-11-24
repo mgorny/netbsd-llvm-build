@@ -23,7 +23,8 @@ if [[ "$host" == NetBSD ]]; then
     -DLIBCXX_CXX_ABI=default \
     -DLIBCXXABI_USE_LLVM_UNWINDER=ON \
     -DLLVM_LIT_ARGS="-vv;--shuffle;--param;cxx_under_test=${PWD}/bin/clang++" \
-    -DOPENMP_TEST_FLAGS="-cxx-isystem${PWD}/include/c++/v1"
+    -DOPENMP_TEST_FLAGS="-cxx-isystem${PWD}/include/c++/v1" \
+    -DLLVM_CCACHE_BUILD=ON
 
   # reduce job count to make lldb tests more stable
   sed -i -e '/COMMAND.*lit.*lldb\/lit$/s:-vv:-j1 -vv:' build.ninja
