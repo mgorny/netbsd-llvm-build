@@ -1,8 +1,0 @@
-{
-    "test1": "local,clang-3.5,i386",
-    "test2": "local,clang-3.5,x86_64",
-    "test3": "local,totclang,i386",
-    "test4": "local,totclang,x86_64",
-    "test5": "local,gcc4.9.2,i386",
-    "test6": "local,gcc4.9.2,x86_64"
-}
