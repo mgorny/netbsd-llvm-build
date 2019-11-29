@@ -57,9 +57,9 @@ cat > "${wrapperDir}"/clang <<-EOF
 		-Wl,-rpath,${buildDir}/lib \
 		"\${@}"
 EOF
-cat > "${wrapperDir}"/bin/clang++ <<-EOF
+cat > "${wrapperDir}"/clang++ <<-EOF
 	#!/bin/sh
-	exec "${buildDir}"/clang++ \
+	exec "${buildDir}"/bin/clang++ \
 		-cxx-isystem${buildDir}/include/c++/v1 \
 		-L${buildDir}/lib \
 		-Wl,-rpath,${buildDir}/lib \
