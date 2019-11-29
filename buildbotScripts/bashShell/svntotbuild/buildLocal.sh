@@ -51,13 +51,13 @@ ninja -j 4
 mkdir -p "${wrapperDir}"
 cat > "${wrapperDir}"/clang <<-EOF
 	#!/bin/sh
-	exec "${buildDir}"/clang \
+	exec "${buildDir}"/bin/clang \
 		-cxx-isystem${buildDir}/include/c++/v1 \
 		-L${buildDir}/lib \
 		-Wl,-rpath,${buildDir}/lib \
 		"\${@}"
 EOF
-cat > "${wrapperDir}"/clang++ <<-EOF
+cat > "${wrapperDir}"/bin/clang++ <<-EOF
 	#!/bin/sh
 	exec "${buildDir}"/clang++ \
 		-cxx-isystem${buildDir}/include/c++/v1 \
