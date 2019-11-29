@@ -23,6 +23,7 @@ cmake -GNinja -DCMAKE_BUILD_TYPE="$buildType" "$llvmDir" \
   -DCMAKE_INSTALL_RPATH=/usr/pkg/lib \
   -DLLVM_LIT_ARGS="-vv;--shuffle;--param;cxx_under_test=${PWD}/bin/clang++" \
   -DLLVM_CCACHE_BUILD=ON \
+  -DLLVM_POLLY_BUILD=OFF \
   -DLLVM_TOOL_CLANG_TOOLS_EXTRA_BUILD=OFF \
   -DLLVM_TOOL_COMPILER_RT_BUILD=OFF \
   -DLLVM_TOOL_LLDB_BUILD=OFF \
