@@ -29,9 +29,8 @@ makesym ../../lld $llvmDir/tools/lld
 makesym ../../clang $llvmDir/tools/clang
 makesym ../../clang-tools-extra $llvmDir/tools/clang/tools/extra
 makesym ../../polly $llvmDir/tools/polly
-#makesym ../../test-suite $llvmDir/projects/test-suite
-makesym ../../libunwind $llvmDir/projects/libunwind
-makesym ../../libcxxabi $llvmDir/projects/libcxxabi
-makesym ../../libcxx $llvmDir/projects/libcxx
-makesym ../../openmp $llvmDir/projects/openmp
-makesym ../../compiler-rt $llvmDir/projects/compiler-rt
+rm -f $llvmDir/projects/libunwind
+rm -f $llvmDir/projects/libcxxabi
+rm -f $llvmDir/projects/libcxx
+rm -f $llvmDir/projects/openmp
+rm -f $llvmDir/projects/compiler-rt

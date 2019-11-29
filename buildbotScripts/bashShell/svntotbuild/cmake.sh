@@ -19,11 +19,12 @@ cmake -GNinja -DCMAKE_BUILD_TYPE="$buildType" "$llvmDir" \
   -DCMAKE_C_FLAGS_RELEASE='-O2' -DCMAKE_CXX_FLAGS_RELEASE='-O2' \
   -DCMAKE_BUILD_RPATH="${PWD}/lib;/usr/pkg/lib" \
   -DCMAKE_INSTALL_RPATH=/usr/pkg/lib \
-  -DLIBCXX_CXX_ABI=default \
-  -DLIBCXXABI_USE_LLVM_UNWINDER=ON \
   -DLLVM_LIT_ARGS="-vv;--shuffle;--param;cxx_under_test=${PWD}/bin/clang++" \
-  -DOPENMP_TEST_FLAGS="-cxx-isystem${PWD}/include/c++/v1" \
   -DLLVM_CCACHE_BUILD=ON
+
+#  -DLIBCXX_CXX_ABI=default \
+#  -DLIBCXXABI_USE_LLVM_UNWINDER=ON \
+#  -DOPENMP_TEST_FLAGS="-cxx-isystem${PWD}/include/c++/v1" \
 
 # reduce job count to make lldb tests more stable
 sed -i -e '/COMMAND.*lit.*lldb\/lit$/s:-vv:-j1 -vv:' build.ninja
