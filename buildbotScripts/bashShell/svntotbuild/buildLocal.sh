@@ -6,12 +6,12 @@ source cleanUp.sh
 markBuildIncomplete
 
 buildType=Release
-mkdir -p "$buildDir"
-cd "$buildDir"
 
 set -x
 
 # stage 1
+mkdir -p "$buildDir"
+cd "$buildDir"
 
 # TODO: /usr/pkg/lib rpath needs to be appended after builddir
 # NOTICE: change -DLIBCXX_CXX_ABI to 'libcxxabi' when upstream recommits
@@ -41,4 +41,35 @@ ninja \
 ninja \
 	$(ninja -C "${buildDir}" -t targets all | cut -d: -f1 | grep '\.a$')
 ninja -j 4
+
+# create cross-stage wrappers
+mkdir -p "${wrapperDir}"
+cat > "${wrapperDir}"/clang <<-EOF
+	#!/bin/sh
+	exec "${buildDir}"/clang \
+		-cxx-isystem${buildDir}/include/c++/v1 \
+		-L${buildDir}/lib \
+		-Wl,-rpath,${buildDir}/lib \
+		"\${@}"
+EOF
+cat > "${wrapperDir}"/clang++ <<-EOF
+	#!/bin/sh
+	exec "${buildDir}"/clang++ \
+		-cxx-isystem${buildDir}/include/c++/v1 \
+		-L${buildDir}/lib \
+		-Wl,-rpath,${buildDir}/lib \
+		"\${@}"
+EOF
+chmod +x "${wrapperDir}"/*
+
+# stage 2
+mkdir -p "$build2Dir"
+cd "$build2Dir"
+export PATH=${wrapperDir}:${buildDir}/bin:${PATH}
+cmake -GNinja -DCMAKE_BUILD_TYPE="$buildType" "$llvmDir" \
+  -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ \
+  -DCMAKE_BUILD_RPATH="${PWD}/lib;/usr/pkg/lib" \
+  -DCMAKE_INSTALL_RPATH=/usr/pkg/lib \
+  -DLLVM_LIT_ARGS="-vv;--shuffle"
+
 markBuildComplete

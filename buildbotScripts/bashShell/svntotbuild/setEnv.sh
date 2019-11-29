@@ -8,6 +8,8 @@ ulimit -c unlimited
 export originalDir=$(pwd)
 export rootDir=$(pwd)/..
 export buildDir=$rootDir/build
+export wrapperDir=$rootDir/wrappers
+export build2Dir=$rootDir/build-stage2
 export remoteDir=/data/local/tmp/lldb
 
 dataRoot=""
