@@ -64,6 +64,7 @@ EOF
 chmod +x "${wrapperDir}"/*
 
 # stage 2
+rm -rf "$build2Dir"
 mkdir -p "$build2Dir"
 cd "$build2Dir"
 export PATH=${wrapperDir}:${buildDir}/bin:${PATH}
