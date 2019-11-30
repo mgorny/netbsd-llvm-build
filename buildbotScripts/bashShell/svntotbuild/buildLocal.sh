@@ -36,11 +36,6 @@ cmake -GNinja -DCMAKE_BUILD_TYPE="$buildType" "$llvmDir" \
   -DLLVM_TOOL_POLLY_BUILD=OFF \
   -DLLVM_TARGETS_TO_BUILD=host
 
-#  -DOPENMP_TEST_FLAGS="-cxx-isystem${PWD}/include/c++/v1" \
-
-# reduce job count to make lldb tests more stable
-sed -i -e '/COMMAND.*lit.*lldb\/lit$/s:-vv:-j1 -vv:' build.ninja
-
 ninja \
 	$(ninja -C "${buildDir}" -t targets all | cut -d: -f1 | grep '^[^-]*TableGen$')
 ninja \
@@ -82,5 +77,14 @@ cmake -GNinja -DCMAKE_BUILD_TYPE="$buildType" "$llvmDir" \
   -DCMAKE_BUILD_RPATH="${PWD}/lib;/usr/pkg/lib" \
   -DCMAKE_INSTALL_RPATH=/usr/pkg/lib \
   -DLLVM_LIT_ARGS="-vv;--shuffle"
+
+# reduce job count to make lldb tests more stable
+sed -i -e '/COMMAND.*lit.*lldb\/lit$/s:-vv:-j1 -vv:' build.ninja
+
+ninja \
+	$(ninja -C "${buildDir}" -t targets all | cut -d: -f1 | grep '^[^-]*TableGen$')
+ninja \
+	$(ninja -C "${buildDir}" -t targets all | cut -d: -f1 | grep '\.a$')
+ninja -j 4
 
 markBuildComplete
