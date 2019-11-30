@@ -82,7 +82,7 @@ sed -i -e '/COMMAND.*lit.*lldb\/lit$/s:-vv:-j1 -vv:' build.ninja
 ninja \
 	$(ninja -t targets all | cut -d: -f1 | grep '^[^-]*TableGen$')
 ninja \
-	$(ninja -t targets all | cut -d: -f1 | grep '\.a$')
+	$(ninja -t targets all | cut -d: -f1 | grep '\.a$' | grep -v libcxx)
 ninja -j 4
 
 markBuildComplete
