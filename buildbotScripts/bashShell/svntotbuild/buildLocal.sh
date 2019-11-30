@@ -37,9 +37,9 @@ cmake -GNinja -DCMAKE_BUILD_TYPE="$buildType" "$llvmDir" \
   -DLLVM_TARGETS_TO_BUILD=host
 
 ninja \
-	$(ninja -C "${buildDir}" -t targets all | cut -d: -f1 | grep '^[^-]*TableGen$')
+	$(ninja -t targets all | cut -d: -f1 | grep '^[^-]*TableGen$')
 ninja \
-	$(ninja -C "${buildDir}" -t targets all | cut -d: -f1 | grep '\.a$')
+	$(ninja -t targets all | cut -d: -f1 | grep '\.a$')
 ninja -j 4
 
 # create cross-stage wrappers
@@ -82,9 +82,9 @@ cmake -GNinja -DCMAKE_BUILD_TYPE="$buildType" "$llvmDir" \
 sed -i -e '/COMMAND.*lit.*lldb\/lit$/s:-vv:-j1 -vv:' build.ninja
 
 ninja \
-	$(ninja -C "${buildDir}" -t targets all | cut -d: -f1 | grep '^[^-]*TableGen$')
+	$(ninja -t targets all | cut -d: -f1 | grep '^[^-]*TableGen$')
 ninja \
-	$(ninja -C "${buildDir}" -t targets all | cut -d: -f1 | grep '\.a$')
+	$(ninja -t targets all | cut -d: -f1 | grep '\.a$')
 ninja -j 4
 
 markBuildComplete
