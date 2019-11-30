@@ -53,12 +53,14 @@ cat > "${wrapperDir}"/clang <<-EOF
 	#!/bin/sh
 	exec "${buildDir}"/bin/clang \
 		-cxx-isystem${buildDir}/include/c++/v1 \
+		-L${buildDir}/lib \
 		"\${@}"
 EOF
 cat > "${wrapperDir}"/clang++ <<-EOF
 	#!/bin/sh
 	exec "${buildDir}"/bin/clang++ \
 		-cxx-isystem${buildDir}/include/c++/v1 \
+		-L${buildDir}/lib \
 		"\${@}"
 EOF
 chmod +x "${wrapperDir}"/*
