@@ -55,6 +55,7 @@ cat > "${wrapperDir}"/clang <<-EOF
 		-cxx-isystem${buildDir}/include/c++/v1 \
 		-L${buildDir}/lib \
 		-Wl,-rpath,${buildDir}/lib \
+		-Wno-unused-command-line-argument \
 		"\${@}"
 EOF
 cat > "${wrapperDir}"/clang++ <<-EOF
@@ -63,6 +64,7 @@ cat > "${wrapperDir}"/clang++ <<-EOF
 		-cxx-isystem${buildDir}/include/c++/v1 \
 		-L${buildDir}/lib \
 		-Wl,-rpath,${buildDir}/lib \
+		-Wno-unused-command-line-argument \
 		"\${@}"
 EOF
 chmod +x "${wrapperDir}"/*
