@@ -36,11 +36,11 @@ cmake -GNinja -DCMAKE_BUILD_TYPE="$buildType" "$llvmDir" \
   -DLLVM_TOOL_POLLY_BUILD=OFF \
   -DLLVM_TARGETS_TO_BUILD=host
 
-ninja \
+ninja -v \
 	$(ninja -t targets all | cut -d: -f1 | grep '^[^-]*TableGen$')
-ninja \
+ninja -v \
 	$(ninja -t targets all | cut -d: -f1 | grep '\.a$')
-ninja -j 4
+ninja -v -j 4
 
 # create cross-stage wrappers
 mkdir -p "${wrapperDir}"
@@ -79,10 +79,10 @@ cmake -GNinja -DCMAKE_BUILD_TYPE="$buildType" "$llvmDir" \
 # reduce job count to make lldb tests more stable
 sed -i -e '/COMMAND.*lit.*lldb\/lit$/s:-vv:-j1 -vv:' build.ninja
 
-ninja \
+ninja -v \
 	$(ninja -t targets all | cut -d: -f1 | grep '^[^-]*TableGen$')
-ninja \
+ninja -v \
 	$(ninja -t targets all | cut -d: -f1 | grep '\.a$' | grep -v libcxx)
-ninja -j 4
+ninja -v -j 4
 
 markBuildComplete
