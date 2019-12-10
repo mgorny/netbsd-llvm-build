@@ -46,13 +46,13 @@ ninja -v -j 4
 mkdir -p "${wrapperDir}"
 cat > "${wrapperDir}"/clang <<-EOF
 	#!/bin/sh
-	export PATH="${wrapperDir}:\${PATH}"
+	export PATH="${wrapperDir}:${buildDir}/bin:\${PATH}"
 	exec "${buildDir}"/bin/clang \
 		"\${@}"
 EOF
 cat > "${wrapperDir}"/clang++ <<-EOF
 	#!/bin/sh
-	export PATH="${wrapperDir}:\${PATH}"
+	export PATH="${wrapperDir}:${buildDir}/bin:\${PATH}"
 	exec "${buildDir}"/bin/clang++ \
 		"\${@}"
 EOF
