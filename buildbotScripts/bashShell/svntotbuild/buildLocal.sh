@@ -56,15 +56,6 @@ cat > "${wrapperDir}"/clang++ <<-EOF
 	exec "${buildDir}"/bin/clang++ \
 		"\${@}"
 EOF
-cat > "${wrapperDir}"/ld <<-EOF
-	#!/bin/sh
-	exec ld.lld \
-		--no-rosegment --disable-new-dtags -znognustack \
-		"\${@}" \
-		-L ${buildDir}/lib \
-		-L=/usr/lib \
-		-rpath "${buildDir}"/lib
-EOF
 chmod +x "${wrapperDir}"/*
 
 # stage 2
