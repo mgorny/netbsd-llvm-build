@@ -56,6 +56,14 @@ cat > "${wrapperDir}"/clang++ <<-EOF
 	exec "${buildDir}"/bin/clang++ \
 		"\${@}"
 EOF
+cat > "${wrapperDir}"/ld <<-EOF
+	#!/bin/sh
+	exec /usr/bin/ld \
+		"\${@}" \
+		-L ${buildDir}/lib \
+		-L=/usr/lib \
+		-rpath "${buildDir}"/lib
+EOF
 chmod +x "${wrapperDir}"/*
 
 # stage 2
