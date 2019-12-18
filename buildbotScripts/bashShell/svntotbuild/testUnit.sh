@@ -19,13 +19,13 @@ tests=(
 	# compiler-rt
 	check-builtins
 #	check-interception -- can't find tests?!
-#	check-lsan   -- needs patching for asan
-#	check-ubsan  -- needs patching for asan/tsan
+	check-lsan
+	check-ubsan
 	check-cfi
 	check-sanitizer
-#	check-fuzzer -- aslr
+#	check-fuzzer -- lots o' breakage
 	check-asan{,-dynamic}
-	check-msan # also some aslr cases
+	check-msan
 	check-tsan
 	check-safestack
 	check-ubsan-minimal
