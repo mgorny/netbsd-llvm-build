@@ -30,7 +30,7 @@ tests=(
 	check-safestack
 	check-ubsan-minimal
 	check-profile
-#	check-xray -- mprotect
+	check-xray
 )
 
 set -x
