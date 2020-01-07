@@ -58,7 +58,8 @@ cat > "${wrapperDir}"/clang++ <<-EOF
 EOF
 cat > "${wrapperDir}"/ld <<-EOF
 	#!/bin/sh
-	exec /usr/bin/ld \
+	exec ld.lld \
+		--no-rosegment --disable-new-dtags -znognustack -znorelro \
 		"\${@}" \
 		-L ${buildDir}/lib \
 		-L=/usr/lib \
