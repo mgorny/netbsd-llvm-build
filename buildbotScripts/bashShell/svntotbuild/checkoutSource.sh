@@ -14,7 +14,9 @@ else
 fi
 
 makesym() {
-  ln -f -s "$1" "$2"
+  if [[ ! -h $2 ]]; then
+    ln -f -s "$1" "$2"
+  fi
 }
 
 if [ -d $projDir/.git ]; then
