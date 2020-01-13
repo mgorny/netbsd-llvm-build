@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 set -e
 source setEnv.sh
+export PATH=${wrapperDir}:${buildDir}/bin:${PATH}
 
 tests=(
 	check-lit
