@@ -63,7 +63,8 @@ cat > "${wrapperDir}"/ld <<-EOF
 		"\${@}" \
 		-L ${buildDir}/lib \
 		-L=/usr/lib \
-		-rpath "${buildDir}"/lib
+		-rpath "${buildDir}"/lib \
+		-lunwind
 EOF
 chmod +x "${wrapperDir}"/*
 
