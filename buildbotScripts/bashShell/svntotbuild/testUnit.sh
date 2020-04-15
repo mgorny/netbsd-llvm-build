@@ -14,8 +14,8 @@ tests=(
 	check-lldb
 	check-unwind
 	check-openmp
-	check-libcxxabi
-	check-libcxx
+	check-cxxabi
+	check-cxx
 
 	# compiler-rt
 	check-builtins
