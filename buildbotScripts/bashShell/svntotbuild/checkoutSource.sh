@@ -24,7 +24,7 @@ if [ -d $projDir/.git ]; then
 else
   git clone $monogit $projDir
 fi
-rm "$projDir/.git/index.lock"
+rm -f "$projDir/.git/index.lock"
 (cd $projDir; git checkout "$rev")
 
 makesym ../../lldb $llvmDir/tools/lldb
